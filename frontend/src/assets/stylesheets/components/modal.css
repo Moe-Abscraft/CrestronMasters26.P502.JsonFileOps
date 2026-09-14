@@ -1,0 +1,71 @@
+.modal.js-modal {
+    --bs-modal-width: 500px;
+    --bs-modal-padding: 48px;
+    --bs-modal-bg: var(--js-uni-color-alpha);
+    --bs-modal-border-color: transparent;
+    --bs-modal-border-radius: 30px;
+
+    --bs-modal-margin: 0.5rem;
+    --bs-modal-color: ;
+}
+
+/* _BEGIN >> MODAL STYLES << 19821 */
+.modal-xs {
+    --bs-modal-width: 400px;
+}
+
+.modal-sm {
+    --bs-modal-width: 600px;
+}
+
+.modal-md {
+    --bs-modal-width: 800px;
+}
+
+.modal-lg {
+    --bs-modal-width: 1000px;
+}
+
+.modal-xl {
+    --bs-modal-width: 1200px;
+}
+
+/* _ENDS >> MODAL STYLES << 19821 */
+
+.js-modal-floating-close-button {
+    position: absolute;
+    left: calc(100% + 20px);
+    top: 0;
+}
+
+.js-modal-confirmation-title {
+    color: var(--js-body-text-color-alpha);
+    font-size: var(--js-font-size-xxl);
+    font-weight: 500;
+    line-height: 1.22;
+    text-align: center;
+}
+
+.js-modal-title {
+    font-size: var(--js-font-size-xxl);
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.js-modal-height-md .modal-content{
+    height: 700px;
+}
+
+@media (max-width: 1199px) {
+    .js-modal-floating-close-button {
+        left: unset;
+        top: unset;
+        bottom: calc(100% + 20px);
+        right: 0;
+    }
+
+    .modal.js-modal {
+        --bs-modal-padding: 24px;
+        --bs-modal-border-radius: 16px;
+    }
+}

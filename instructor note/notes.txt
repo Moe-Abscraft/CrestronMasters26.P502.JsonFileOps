@@ -1,0 +1,11 @@
+//Serialize      object → JSON text (write out)
+//Deserialize    JSON text → object (read in)
+
+//roomName	    string	          string RoomName
+//autoShutdown	boolean	          bool AutoShutdown
+//sources	      array of objects	List<SourceInfo>
+//displays	    array of objects	List<DisplayInfo>
+//presets	      array of strings	List<string>
+
+
+// paste special

@@ -1,0 +1,92 @@
+.js-toast {
+  --bs-toast-padding-x: 0.5rem;
+  --bs-toast-padding-y: 0.5rem;
+  --bs-toast-max-width: auto;
+  --bs-border-radius: 50rem;
+  --bs-toast-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  --bs-toast-bg: var(--js-dynamic-button-back-color);
+  --js-toast-icon-main-frame-size: 22px;
+  border: none;
+  position: fixed;
+  z-index: var(--bs-toast-zindex);
+  right: calc(var(--js-header-gutter-space) + (var(--bs-gutter-x) * 0.5));
+  bottom: calc(var(--js-header-gutter-space) + (var(--bs-gutter-x) * 0.5));
+}
+
+.js-toast.js-toast-center {
+  --bs-border-radius: 50rem;
+  --bs-toast-bg: var(--js-dynamic-button-back-color);
+  --js-toast-icon-main-frame-size: 40px;
+  bottom: unset;
+  right: unset;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.js-toast .toast-body {
+  display: flex;
+  grid-gap: 6px;
+  align-items: center;
+  padding-right: calc(var(--bs-toast-padding-x) * 2);
+}
+
+.js-toast .js-toast-icon {
+  background-color: var(--js-dynamic-color-back-bravo);
+  color: var(--js-dynamic-color-text-alpha);
+  width: var(--js-toast-icon-main-frame-size);
+  height: var(--js-toast-icon-main-frame-size);
+  border-radius: var(--js-toast-icon-main-frame-size);
+  font-size: calc(var(--js-toast-icon-main-frame-size) * 0.7);
+  flex: 0 0 auto;
+}
+
+.js-toast .js-toast-text {
+  font-size: var(--js-font-size-jxl);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.js-toast.js-toast-center .js-toast-icon {
+  font-size: var(--js-font-size-jxl);
+}
+
+.js-toast.js-toast-center .js-toast-text {
+  font-size: var(--js-font-size-jsm);
+}
+
+.js-loading-animation,
+.js-toast .js-toast-animation .has-toast-sub-icon-frame {
+  animation: loadingRotation 2s infinite;
+}
+
+.toastPosition {
+  position: absolute;
+  bottom: 0;
+  right: 5rem;
+}
+
+@media (min-width: 1920px) {
+  .js-toast {
+    --bs-toast-padding-x: 0.75rem;
+    --bs-toast-padding-y: 0.75rem;
+    --js-toast-icon-main-frame-size: 45px;
+  }
+
+  .js-toast .toast-body {
+    grid-gap: 10px;
+  }
+}
+
+@media (max-width: 575px) {
+  .js-toast {
+    right: 1.5rem;
+    bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .js-toast.js-toast-center {
+    --bs-toast-max-width: 75%;
+  }
+}

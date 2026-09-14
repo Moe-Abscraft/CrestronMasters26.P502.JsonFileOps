@@ -1,0 +1,204 @@
+{
+	"name": "AppContract",
+	"timestamp": "2026-09-14 15:04:57.640",
+	"version": "1.0.0.0",
+	"schema_version": 1,
+	"extra_value": "",
+	"signals": {
+		"states": {
+			"boolean": {
+				"1": {
+					"2": "System.AutoUpdate_Fb"
+				}
+			},
+			"numeric": {
+				"13": {
+					"1": "Sources.Selected"
+				}
+			},
+			"string": {
+				"1": {
+					"1": "System.LastUpdatedTime"
+				},
+				"3": {
+					"1": "Displays.Display[0].Name",
+					"2": "Displays.Display[0].Model",
+					"3": "Displays.Display[0].RoutedSource"
+				},
+				"4": {
+					"1": "Displays.Display[1].Name",
+					"2": "Displays.Display[1].Model",
+					"3": "Displays.Display[1].RoutedSource"
+				},
+				"5": {
+					"1": "Displays.Display[2].Name",
+					"2": "Displays.Display[2].Model",
+					"3": "Displays.Display[2].RoutedSource"
+				},
+				"6": {
+					"1": "Displays.Display[3].Name",
+					"2": "Displays.Display[3].Model",
+					"3": "Displays.Display[3].RoutedSource"
+				},
+				"7": {
+					"1": "Displays.Display[4].Name",
+					"2": "Displays.Display[4].Model",
+					"3": "Displays.Display[4].RoutedSource"
+				},
+				"8": {
+					"1": "Displays.Display[5].Name",
+					"2": "Displays.Display[5].Model",
+					"3": "Displays.Display[5].RoutedSource"
+				},
+				"9": {
+					"1": "Displays.Display[6].Name",
+					"2": "Displays.Display[6].Model",
+					"3": "Displays.Display[6].RoutedSource"
+				},
+				"10": {
+					"1": "Displays.Display[7].Name",
+					"2": "Displays.Display[7].Model",
+					"3": "Displays.Display[7].RoutedSource"
+				},
+				"11": {
+					"1": "Displays.Display[8].Name",
+					"2": "Displays.Display[8].Model",
+					"3": "Displays.Display[8].RoutedSource"
+				},
+				"12": {
+					"1": "Displays.Display[9].Name",
+					"2": "Displays.Display[9].Model",
+					"3": "Displays.Display[9].RoutedSource"
+				},
+				"14": {
+					"1": "Sources.Source[0].Name"
+				},
+				"15": {
+					"1": "Sources.Source[1].Name"
+				},
+				"16": {
+					"1": "Sources.Source[2].Name"
+				},
+				"17": {
+					"1": "Sources.Source[3].Name"
+				},
+				"18": {
+					"1": "Sources.Source[4].Name"
+				},
+				"19": {
+					"1": "Sources.Source[5].Name"
+				},
+				"20": {
+					"1": "Sources.Source[6].Name"
+				},
+				"21": {
+					"1": "Sources.Source[7].Name"
+				},
+				"22": {
+					"1": "Sources.Source[8].Name"
+				},
+				"23": {
+					"1": "Sources.Source[9].Name"
+				}
+			}
+		},
+		"events": {
+			"boolean": {
+				"System.ReloadConfig": {
+					"joinId": 1,
+					"smartObjectId": 1
+				},
+				"System.AutoUpdate": {
+					"joinId": 2,
+					"smartObjectId": 1
+				},
+				"Displays.Display[0].Select": {
+					"joinId": 1,
+					"smartObjectId": 3
+				},
+				"Displays.Display[0].Clear": {
+					"joinId": 2,
+					"smartObjectId": 3
+				},
+				"Displays.Display[1].Select": {
+					"joinId": 1,
+					"smartObjectId": 4
+				},
+				"Displays.Display[1].Clear": {
+					"joinId": 2,
+					"smartObjectId": 4
+				},
+				"Displays.Display[2].Select": {
+					"joinId": 1,
+					"smartObjectId": 5
+				},
+				"Displays.Display[2].Clear": {
+					"joinId": 2,
+					"smartObjectId": 5
+				},
+				"Displays.Display[3].Select": {
+					"joinId": 1,
+					"smartObjectId": 6
+				},
+				"Displays.Display[3].Clear": {
+					"joinId": 2,
+					"smartObjectId": 6
+				},
+				"Displays.Display[4].Select": {
+					"joinId": 1,
+					"smartObjectId": 7
+				},
+				"Displays.Display[4].Clear": {
+					"joinId": 2,
+					"smartObjectId": 7
+				},
+				"Displays.Display[5].Select": {
+					"joinId": 1,
+					"smartObjectId": 8
+				},
+				"Displays.Display[5].Clear": {
+					"joinId": 2,
+					"smartObjectId": 8
+				},
+				"Displays.Display[6].Select": {
+					"joinId": 1,
+					"smartObjectId": 9
+				},
+				"Displays.Display[6].Clear": {
+					"joinId": 2,
+					"smartObjectId": 9
+				},
+				"Displays.Display[7].Select": {
+					"joinId": 1,
+					"smartObjectId": 10
+				},
+				"Displays.Display[7].Clear": {
+					"joinId": 2,
+					"smartObjectId": 10
+				},
+				"Displays.Display[8].Select": {
+					"joinId": 1,
+					"smartObjectId": 11
+				},
+				"Displays.Display[8].Clear": {
+					"joinId": 2,
+					"smartObjectId": 11
+				},
+				"Displays.Display[9].Select": {
+					"joinId": 1,
+					"smartObjectId": 12
+				},
+				"Displays.Display[9].Clear": {
+					"joinId": 2,
+					"smartObjectId": 12
+				}
+			},
+			"numeric": {
+				"Sources.Select": {
+					"joinId": 1,
+					"smartObjectId": 13
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,32 @@
+{
+  "roomName": "Boardroom A",
+  "autoShutdown": true,
+  "xPanelIpId": 48,
+  "sources": [
+    {
+      "name": "Laptop HDMI",
+      "nvxIpid": 3
+    },
+    {
+      "name": "Room PC",
+      "nvxIpid": 4
+    },
+    {
+      "name": "Wireless BYOD",
+      "nvxIpid": 5
+    }
+  ],
+  "displays": [
+    {
+      "name": "Left",
+      "model": "NEC",
+      "nvxIpid": 16
+    },
+    {
+      "name": "Right",
+      "model": "Sharp",
+      "nvxIpid": 17
+    }
+  ],
+  "presets": [ "Presentation", "Video Conference" ]
+}

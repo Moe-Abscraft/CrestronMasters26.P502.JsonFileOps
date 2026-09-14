@@ -1,0 +1,73 @@
+:root {
+  --js-font-alpha: "Helvetica Neue", "Verdana", "sans-serif";
+  --js-header-height: 80px;
+  --js-dialer-height: 140px;
+  --js-header-gutter-space: 24px;
+
+  --js-dashboard-container: 840px;
+
+  --js-font-size-3xl: 30px;
+  --js-font-size-6xl: 60px;
+  --js-font-size-5xl: 50px;
+  --js-font-size-4xl: 40px;
+  --js-font-size-12xl: 120px;
+  --js-font-size-xxl: 26px;
+  --js-font-size-jxl: 24px;
+  --js-font-size-jlg: 22px;
+  --js-font-size-jmd: 20px;
+  --js-font-size-jsm: 18px;
+  --js-font-size-jxs: 16px;
+
+  --js-favourite-buttons: 35px;
+
+  --body-font-size: var(--js-font-size-jmd);
+  --body-font-weight: 400;
+  --body-line-height: 1.25;
+
+  --js-uni-color-alpha: #ffffff;
+  --js-uni-color-bravo: #34353c;
+  --js-uni-color-champ: #656984;
+  --js-uni-color-delta: #eb170e;
+  --js-uni-color-earth: #2f8653;
+  --js-uni-color-fresh: #e8edf1;
+  --js-uni-color-helen: #d9dee7;
+  --js-uni-color-india: #626367;
+
+  --js-uni-height: 100px;
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --js-dashboard-container: 100%;
+    --js-header-height: 120px;
+  }
+}
+
+@media (max-width: 1199px) {
+  :root {
+    --js-font-size-3xl: 26px;
+    --js-font-size-xxl: 24px;
+    --js-font-size-jxl: 22px;
+    --js-font-size-jlg: 18px;
+    --js-font-size-jmd: 16px;
+    --js-font-size-jsm: 14px;
+    --js-font-size-jxs: 12px;
+  }
+}
+
+@media (max-width: 575px) {
+  :root {
+    --js-font-size-3xl: 22px;
+    --js-font-size-xxl: 20px;
+    --js-font-size-jxl: 18px;
+    --js-font-size-jlg: 16px;
+    --js-font-size-jmd: 14px;
+    --js-font-size-jsm: 12px;
+  }
+}
+
+@media (max-width: 575px) {
+  :root {
+    --js-header-gutter-space: 16px;
+  }
+}

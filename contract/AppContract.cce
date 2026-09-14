@@ -1,0 +1,313 @@
+{
+	"Errors": [],
+	"id": "_9o7ogahm1",
+	"name": "AppContract",
+	"description": "",
+	"company": "",
+	"client": "",
+	"author": "",
+	"version": "1.0.0.0",
+	"schemaVersion": 1,
+	"subContractLinks": [],
+	"subContracts": [],
+	"specifications": [
+		{
+			"Errors": [],
+			"parentId": "_9o7ogahm1",
+			"id": "_qq5dfqkaa",
+			"componentId": "_1688vy92t",
+			"instanceName": "System",
+			"numberOfInstances": 1
+		},
+		{
+			"Errors": [],
+			"parentId": "_9o7ogahm1",
+			"id": "_hqws0mo50",
+			"componentId": "_ou5n3rbgs",
+			"instanceName": "Displays",
+			"numberOfInstances": 1
+		},
+		{
+			"Errors": [],
+			"parentId": "_9o7ogahm1",
+			"id": "_qowpaa0e9",
+			"componentId": "_dojmdimbn",
+			"instanceName": "Sources",
+			"numberOfInstances": 1
+		}
+	],
+	"components": [
+		{
+			"Errors": [],
+			"parentId": "_9o7ogahm1",
+			"id": "_ou5n3rbgs",
+			"name": "Displays",
+			"commands": [],
+			"feedbacks": [],
+			"specifications": [
+				{
+					"Errors": [],
+					"parentId": "_9o7ogahm1",
+					"id": "_bfqql3psg",
+					"componentId": "_tht1g1g58",
+					"instanceName": "Display",
+					"numberOfInstances": 10
+				}
+			]
+		},
+		{
+			"Errors": [],
+			"parentId": "_9o7ogahm1",
+			"id": "_tht1g1g58",
+			"name": "Display",
+			"commands": [
+				{
+					"Errors": [],
+					"name": "Name",
+					"siblingId": "_kldnrdmrl",
+					"dataType": 3,
+					"notes": "",
+					"id": "_gqqf90x4h",
+					"parentId": "_tht1g1g58",
+					"attributeType": 0
+				},
+				{
+					"Errors": [],
+					"name": "Model",
+					"siblingId": "_ie6h5yjh8",
+					"dataType": 3,
+					"notes": "",
+					"id": "_djedsubv7",
+					"parentId": "_tht1g1g58",
+					"attributeType": 0
+				},
+				{
+					"Errors": [],
+					"name": "RoutedSource",
+					"siblingId": "_c4jbjwww6",
+					"dataType": 3,
+					"notes": "",
+					"id": "_p78ya2fjy",
+					"parentId": "_tht1g1g58",
+					"attributeType": 0
+				},
+				{
+					"Errors": [],
+					"name": "",
+					"siblingId": "_qe8loex89",
+					"dataType": 1,
+					"notes": "",
+					"id": "_vkq2f7jqc",
+					"parentId": "_tht1g1g58",
+					"attributeType": 0
+				},
+				{
+					"Errors": [],
+					"name": "",
+					"siblingId": "_ta4jw7mup",
+					"dataType": 1,
+					"notes": "",
+					"id": "_4qbs27dyb",
+					"parentId": "_tht1g1g58",
+					"attributeType": 0
+				}
+			],
+			"feedbacks": [
+				{
+					"Errors": [],
+					"name": "",
+					"siblingId": "_gqqf90x4h",
+					"dataType": 3,
+					"notes": "",
+					"id": "_kldnrdmrl",
+					"parentId": "_tht1g1g58",
+					"attributeType": 1
+				},
+				{
+					"Errors": [],
+					"name": "",
+					"siblingId": "_djedsubv7",
+					"dataType": 3,
+					"notes": "",
+					"id": "_ie6h5yjh8",
+					"parentId": "_tht1g1g58",
+					"attributeType": 1
+				},
+				{
+					"Errors": [],
+					"name": "",
+					"siblingId": "_p78ya2fjy",
+					"dataType": 3,
+					"notes": "",
+					"id": "_c4jbjwww6",
+					"parentId": "_tht1g1g58",
+					"attributeType": 1
+				},
+				{
+					"Errors": [],
+					"name": "Select",
+					"siblingId": "_vkq2f7jqc",
+					"dataType": 1,
+					"notes": "",
+					"id": "_qe8loex89",
+					"parentId": "_tht1g1g58",
+					"attributeType": 1
+				},
+				{
+					"Errors": [],
+					"name": "Clear",
+					"siblingId": "_4qbs27dyb",
+					"dataType": 1,
+					"notes": "",
+					"id": "_ta4jw7mup",
+					"parentId": "_tht1g1g58",
+					"attributeType": 1
+				}
+			],
+			"specifications": []
+		},
+		{
+			"Errors": [],
+			"parentId": "_9o7ogahm1",
+			"id": "_dojmdimbn",
+			"name": "Sources",
+			"commands": [
+				{
+					"Errors": [],
+					"name": "Selected",
+					"siblingId": "_p4dfw2irb",
+					"dataType": 2,
+					"notes": "",
+					"id": "_e9fs2mpum",
+					"parentId": "_dojmdimbn",
+					"attributeType": 0
+				}
+			],
+			"feedbacks": [
+				{
+					"Errors": [],
+					"name": "Select",
+					"siblingId": "_e9fs2mpum",
+					"dataType": 2,
+					"notes": "",
+					"id": "_p4dfw2irb",
+					"parentId": "_dojmdimbn",
+					"attributeType": 1
+				}
+			],
+			"specifications": [
+				{
+					"Errors": [],
+					"parentId": "_9o7ogahm1",
+					"id": "_xdr1iyfqb",
+					"componentId": "_hqtmx2qve",
+					"instanceName": "Source",
+					"numberOfInstances": 10
+				}
+			]
+		},
+		{
+			"Errors": [],
+			"parentId": "_9o7ogahm1",
+			"id": "_hqtmx2qve",
+			"name": "Source",
+			"commands": [
+				{
+					"Errors": [],
+					"name": "Name",
+					"siblingId": "_ufrzoanjz",
+					"dataType": 3,
+					"notes": "",
+					"id": "_41uydbrx6",
+					"parentId": "_hqtmx2qve",
+					"attributeType": 0
+				}
+			],
+			"feedbacks": [
+				{
+					"Errors": [],
+					"name": "",
+					"siblingId": "_41uydbrx6",
+					"dataType": 3,
+					"notes": "",
+					"id": "_ufrzoanjz",
+					"parentId": "_hqtmx2qve",
+					"attributeType": 1
+				}
+			],
+			"specifications": []
+		},
+		{
+			"Errors": [],
+			"parentId": "_9o7ogahm1",
+			"id": "_1688vy92t",
+			"name": "System",
+			"commands": [
+				{
+					"Errors": [],
+					"name": "",
+					"siblingId": "_7ohnj0fy0",
+					"dataType": 1,
+					"notes": "",
+					"id": "_4ybguctf8",
+					"parentId": "_1688vy92t",
+					"attributeType": 0
+				},
+				{
+					"Errors": [],
+					"name": "LastUpdatedTime",
+					"siblingId": "_6fvupsox8",
+					"dataType": 3,
+					"notes": "",
+					"id": "_si4u3tlae",
+					"parentId": "_1688vy92t",
+					"attributeType": 0
+				},
+				{
+					"Errors": [],
+					"name": "AutoUpdate_Fb",
+					"siblingId": "_2daqz1ef9",
+					"dataType": 1,
+					"notes": "",
+					"id": "_q3r9k1fa2",
+					"parentId": "_1688vy92t",
+					"attributeType": 0
+				}
+			],
+			"feedbacks": [
+				{
+					"Errors": [],
+					"name": "ReloadConfig",
+					"siblingId": "_4ybguctf8",
+					"dataType": 1,
+					"notes": "",
+					"id": "_7ohnj0fy0",
+					"parentId": "_1688vy92t",
+					"attributeType": 1
+				},
+				{
+					"Errors": [],
+					"name": "",
+					"siblingId": "_si4u3tlae",
+					"dataType": 3,
+					"notes": "",
+					"id": "_6fvupsox8",
+					"parentId": "_1688vy92t",
+					"attributeType": 1
+				},
+				{
+					"Errors": [],
+					"name": "AutoUpdate",
+					"siblingId": "_q3r9k1fa2",
+					"dataType": 1,
+					"notes": "",
+					"id": "_2daqz1ef9",
+					"parentId": "_1688vy92t",
+					"attributeType": 1
+				}
+			],
+			"specifications": []
+		}
+	],
+	"allComponentsForAllContracts": []
+}

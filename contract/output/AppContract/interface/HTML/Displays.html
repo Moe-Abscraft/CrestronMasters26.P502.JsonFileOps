@@ -1,0 +1,18 @@
+<template id="AppContract.Displays.Displays">
+	<div id="Displays.Displays">
+	 	<ch5-list id="Displays.Display.Display" indexId="idx2" size="10" orientation="horizontal">
+ 	 	 <template>
+ 	 	 <div class="horizontal-list-item">
+	 	<span data-ch5-textcontent="Displays.Display[{{idx2}}].Name">Label</span>
+	 	<span data-ch5-textcontent="Displays.Display[{{idx2}}].Model">Label</span>
+	 	<span data-ch5-textcontent="Displays.Display[{{idx2}}].RoutedSource">Label</span>
+	 		<ch5-button sendEventOnClick="Displays.Display[{{idx2}}].Select">
+        	</ch5-button>
+	 		<ch5-button sendEventOnClick="Displays.Display[{{idx2}}].Clear">
+        	</ch5-button>
+	 	 </div> 
+ 	 	</template>
+ 	</ch5-list>
+
+	 </div>
+</template>

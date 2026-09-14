@@ -1,0 +1,60 @@
+<main class="js-main presentation">
+    <section class="header">
+        <label for="" class="label-connected">Please select a source from below.</label>
+    </section>
+
+    <div class="container room-content">
+
+        <!-- Sources -->
+        <section class="group">
+            <h2 class="group-title">Sources</h2>
+
+            <div class="js-dashboard-content-container sources">
+                <button type="button" class="btn src" *ngFor="let source of visibleSources; trackBy: trackByIndex"
+                    [class.selected]="source.selected" (click)="sourceSet(source)"
+                    [attr.aria-pressed]="source.selected">
+                    <img [src]="iconFor(source)" [alt]="source.icon" class="icon-connected">
+                    <span class="src-name">{{ source.name }}</span>
+                </button>
+            </div>
+
+            <p class="empty-note" *ngIf="visibleSources.length === 0">
+                Waiting for the room configuration&hellip;
+            </p>
+        </section>
+
+        <!-- Displays -->
+        <section class="group" *ngIf="visibleDisplays.length > 0">
+            <h2 class="group-title">Displays</h2>
+
+            <div class="js-dashboard-content-container displays">
+                <div class="disp" *ngFor="let display of visibleDisplays; trackBy: trackByIndex">
+                    <img [src]="displayIcon" alt="display" class="icon-connected">
+
+                    <span class="disp-name">{{ display.name }}</span>
+                    <span class="disp-model" *ngIf="display.model.length > 0">{{ display.model }}</span>
+
+                    <div class="disp-routed" [class.idle]="display.routedSource.length === 0">
+                        <span class="disp-routed-label">Routed source</span>
+                        <span class="disp-routed-value">{{ display.routedSource || 'None' }}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="container-fluid footer-container">
+        <div class="js-dashboard-content-footer h-100">
+            <div class="js-dashboard-content-footer-start">
+                <div class="js-dashboard-footer-text end-align">
+                    <span>Crestron Masters 2026 | P501</span>
+                </div>
+            </div>
+            <div class="js-dashboard-content-footer-end">
+                <div class="js-dashboard-footer-brand item-end end-align">
+                    <span>Crestron Electronics</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

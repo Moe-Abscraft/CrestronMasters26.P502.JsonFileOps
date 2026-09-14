@@ -1,0 +1,80 @@
+[data-theme-mode="light"] .form-check-input:checked[type="radio"] {
+  --bs-form-check-bg-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M50 90C72.0914 90 90 72.0914 90 50C90 27.9086 72.0914 10 50 10C27.9086 10 10 27.9086 10 50C10 72.0914 27.9086 90 50 90ZM50 70C61.0457 70 70 61.0457 70 50C70 38.9543 61.0457 30 50 30C38.9543 30 30 38.9543 30 50C30 61.0457 38.9543 70 50 70Z' fill='white'/%3E%3C/svg%3E%0A");
+}
+
+[data-theme-mode="dark"] .form-check-input:checked[type="radio"] {
+  --bs-form-check-bg-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M50 90C72.0914 90 90 72.0914 90 50C90 27.9086 72.0914 10 50 10C27.9086 10 10 27.9086 10 50C10 72.0914 27.9086 90 50 90ZM50 70C61.0457 70 70 61.0457 70 50C70 38.9543 61.0457 30 50 30C38.9543 30 30 38.9543 30 50C30 61.0457 38.9543 70 50 70Z' fill='%2312203F'/%3E%3C/svg%3E%0A");
+}
+
+.js-form-label {
+  color: var(--js-body-text-color-alpha);
+  font-size: var(--js-font-size-jsm);
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: left;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.js-form-input {
+  color: var(--js-body-text-color-alpha);
+  background-color: var(--js-dynamic-color-back-fresh);
+  font-size: var(--js-font-size-jmd);
+  font-weight: 400;
+  text-align: left;
+  border: 2px solid transparent;
+  border-radius: 50rem;
+  padding: 5px 15px;
+  min-height: 50px;
+  display: block;
+  width: 100%;
+}
+
+.js-form-input:focus {
+  outline: none;
+  box-shadow: none;
+  border: 2px solid var(--js-dynamic-color-back-bravo);
+  background-color: var(--js-dynamic-border-color-alpha);
+}
+
+.js-dial-pad-input .form-control {
+  padding: 5px 15px;
+  min-height: 50px;
+  border-radius: 50rem;
+  border: 2px solid var(--js-dynamic-color-back-bravo);
+  font-size: var(--js-font-size-jmd);
+  font-weight: 500;
+}
+
+.js-dial-pad-input .form-control:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.js-form-error {
+  display: flex;
+  align-items: center;
+  grid-gap: 6px;
+  font-size: var(--js-font-size-jmd);
+  font-weight: 400;
+  line-height: 1;
+  margin-top: 2px;
+  color: red;
+}
+
+.js-input-error:focus {
+  outline: none;
+  box-shadow: none;
+  border: 2px solid var(--js-dynamic-color-back-delta);
+}
+
+@media (min-width: 1920px) {
+  .js-form-label , .js-form-error {
+    font-size: var(--js-font-size-3xl);
+  }
+
+  .js-form-input {
+    font-size: var(--js-font-size-3xl);
+    min-height: 65px;
+  }
+}

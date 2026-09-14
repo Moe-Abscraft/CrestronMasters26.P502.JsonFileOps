@@ -1,0 +1,14 @@
+<template id="AppContract.Sources.Sources">
+	<div id="Sources.Sources">
+	 		<ch5-slider sendEventOnChange="Sources.Select" receiveStateValue="Sources.Selected">
+        	</ch5-slider>
+	 	<ch5-list id="Sources.Source.Source" indexId="idx2" size="10" orientation="horizontal">
+ 	 	 <template>
+ 	 	 <div class="horizontal-list-item">
+	 	<span data-ch5-textcontent="Sources.Source[{{idx2}}].Name">Label</span>
+	 	 </div> 
+ 	 	</template>
+ 	</ch5-list>
+
+	 </div>
+</template>

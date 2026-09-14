@@ -1,0 +1,237 @@
+/* _START >> GLOBAL PAGE SETTINGS << 19821 */
+* {
+    margin: 0;
+    padding: 0;
+    scrollbar-width: thin;
+}
+
+body {
+    font-size: var(--body-font-size);
+    font-family: var(--js-font-alpha);
+    font-weight: var(--body-font-weight);
+    line-height: var(--body-line-height);
+    background: var(--js-body-back-color);
+    color: var(--js-body-text-color-alpha);
+}
+
+/* _ENDS >> GLOBAL PAGE SETTINGS << 19821 */
+
+/* _START >> GLOBAL PSEUDO STYLES << 19821 */
+::-moz-focus-inner {
+    border: 0px solid transparent;
+}
+
+::-webkit-focus-inner {
+    border: 0px solid transparent;
+}
+
+*::-moz-selection {
+    color: var(--select-text-color);
+    background: var(--select-back-color);
+}
+
+*::selection {
+    color: var(--select-text-color);
+    background: var(--select-back-color);
+}
+
+*::-moz-selection {
+    color: var(--select-text-color);
+    background: var(--select-back-color);
+}
+
+*::-webkit-selection {
+    color: var(--select-text-color);
+    background: var(--select-back-color);
+}
+
+/* USE !important TO PREVENT ISSUES WITH BROWSER OVERRIDE */
+*::-webkit-input-placeholder {
+    color: var(--placeholder-inactive-color) !important;
+    opacity: 1;
+}
+
+*::-moz-placeholder {
+    color: var(--placeholder-inactive-color) !important;
+    opacity: 1;
+}
+
+*:-moz-placeholder {
+    color: var(--placeholder-inactive-color) !important;
+    opacity: 1;
+}
+
+*:-ms-input-placeholder {
+    color: var(--placeholder-inactive-color) !important;
+    opacity: 1;
+}
+
+*::-ms-input-placeholder {
+    color: var(--placeholder-inactive-color) !important;
+    opacity: 1;
+}
+
+*:focus::-webkit-input-placeholder {
+    color: var(--placeholder-focused-color) !important;
+}
+
+*:focus::-moz-placeholder {
+    color: var(--placeholder-focused-color) !important;
+}
+
+*:focus:-moz-placeholder {
+    color: var(--placeholder-focused-color) !important;
+}
+
+*:focus:-ms-input-placeholder {
+    color: var(--placeholder-focused-color) !important;
+}
+
+*:focus::-ms-input-placeholder {
+    color: var(--placeholder-focused-color) !important;
+}
+
+/* _ENDS >> GLOBAL PSEUDO STYLES << 19821 */
+
+/* _START >> GLOBAL FONTS & TEXT STYLES << 19821 */
+.font-alpha {
+    font-family: var(--font-alpha) !important;
+}
+
+.ellipsis {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ellipsis-line-1 {
+    -webkit-line-clamp: 1;
+}
+
+.ellipsis-line-2 {
+    -webkit-line-clamp: 2;
+}
+
+.break-word {
+    word-break: break-word;
+}
+
+.break-all {
+    word-break: break-all;
+}
+
+/* _ENDS >> GLOBAL FONTS & TEXT STYLES << 19821 */
+
+
+/* _START >> DISPLAY ELEMENTS STYLES << 19821 */
+.flex-center {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-auto-0 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+}
+
+/* _ENDS >> DISPLAY ELEMENTS STYLES << 19821 */
+
+/* _START >> IMAGE STYLES << 19821 */
+
+img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.cover-image img,
+.cover-image svg,
+.contain-image img,
+.contain-image svg,
+.contain-image video,
+.contain-image iframe {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    max-height: inherit;
+}
+
+.contain-image svg,
+.contain-image img,
+.contain-image video,
+.contain-image iframe {
+    -o-object-fit: contain;
+    object-fit: contain;
+}
+
+.cover-image svg,
+.cover-image img {
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+/* _ENDS >> IMAGE STYLES << 19821 */
+
+/* _BEGIN >> TEXT COLORS STYLES << 19821 */
+.text-color-light-bravo {
+    color: var(--js-uni-color-india);
+}
+
+.dynamic-combo-color-alpha {
+    background-color: var(--js-dynamic-color-back-bravo) !important;
+    color: var(--js-dynamic-color-text-alpha) !important;
+}
+
+.dynamic-combo-color-bravo {
+    background-color: var(--js-dynamic-color-back-fresh);
+    color: var(--js-dynamic-color-text-alpha);
+}
+
+/* _ENDS >> TEXT COLORS STYLES << 19821 */
+
+
+/* _BEGIN >> LINK & ANCHOR LINK GLOBAL CUSTOM STYLES << 19821 */
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: all 0.35s;
+}
+
+a:active,
+a:focus,
+a:hover {
+    color: var(--link-hover);
+    text-decoration: none;
+    transition: all 0.35s;
+}
+
+a[disabled],
+a[disabled]:hover,
+a[disabled]:focus,
+a[disabled]:active {
+    color: var(--color-gray-shades-04);
+    text-decoration: none;
+    cursor: not-allowed;
+}
+
+/* _ENDS >> LINK & ANCHOR LINK GLOBAL CUSTOM STYLES << 19821 */
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.resize-none {
+    resize: none;
+}
+
+.js-pointer {
+    cursor: pointer;
+}
+
+/* _BEGIN >> INPUT REBOOT STYLES << 19821 */
+
+/* _ENDS_ >> INPUT REBOOT STYLES << 19821 */

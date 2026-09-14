@@ -1,0 +1,42 @@
+[data-theme-mode=dark] {
+    /* --js-body-back-color: #08142F; */
+    /* --js-general-overlay-color: rgb(255 255 255 / 25%); */
+
+
+    --js-dynamic-color-back-alpha: #12203F;
+    --js-dynamic-color-back-bravo: #1B50E7;
+    --js-dynamic-color-back-champ: #2CB551;
+    --js-dynamic-color-back-delta: #FF4039;
+    --js-dynamic-color-back-earth: #D79005;
+    --js-dynamic-color-back-fresh: #24355C;
+    --js-dynamic-color-evidence-top-panel:#F2F2F2;
+
+    --js-dynamic-color-text-alpha: #F2F2F2;
+    --js-dynamic-color-text-bravo: #8D9EC5;
+    --js-dynamic-color-text-delta: #FF4039;
+
+    --js-dynamic-border-color-alpha: #283A64;
+
+    --js-body-text-color-alpha: #F2F2F2;
+    --js-body-text-color-bravo: #C5C8CE;
+
+    --js-card-back-color: var(--js-dynamic-color-back-alpha);
+
+    --js-dynamic-button-back-color: #24355C;
+    --js-dynamic-button-text-color: #8D9EC5;
+
+    --js-tab-dafault-back-color: #24355C;
+    --js-tab-dafault-text-color: #F2F2F2;
+    --js-tab-active-back-color: #1B50E7;
+    --js-tab-active-text-color: #F2F2F2;
+
+    --js-meridian-toggle-back-color: #24355C;
+    --js-dynamic-color-text-bw:#FFFFFF;
+
+    --js-header-speaker-mute-border: #08142F;
+    --js-header-video-move-buttons: #8D9EC5;
+    --js-general-overlay-color: #000000;
+    --js-general-opacity: 0.8;
+    --js-volume-progress-bg: #000000;
+    --js-keyboard-cross-button: #3A4C72;
+}

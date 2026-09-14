@@ -1,0 +1,34 @@
+<header class="js-header pt1">
+    <div class="conn" [class.online]="connected">
+        <span class="conn-dot"></span>
+        <span class="conn-text">VC-4 {{ connected ? 'Connected' : 'Disconnected' }}</span>
+    </div>
+    <div class="header">
+        <span>{{ mode }}</span>
+        <div class="config-status">
+            <button type="button" class="btn btn-outline-primary" (click)="reloadConfig()">
+                Reload Config
+            </button>
+            <span class="last-updated">
+                Last updated:
+                <span class="value">{{ lastUpdatedTime || '--' }}</span>
+            </span>
+        </div>
+        <div class="room-layout" *ngIf="page === 1">
+            <div class="row">
+                <div class="col">
+                    <div ngbDropdown class="d-inline-block">
+                        <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+                            Room Layout
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button ngbDropdownItem (click)="separate()">Rooms Separate</button>
+                            <button ngbDropdownItem></button>
+                            <button ngbDropdownItem (click)="combine()">Rooms Combine</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

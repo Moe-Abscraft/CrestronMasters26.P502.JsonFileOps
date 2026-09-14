@@ -1,0 +1,210 @@
+/* _BEGIN >> BUTTON REBOOT STYLES << 19821 */
+.btn.js-button {
+  --bs-btn-padding-x: 18px;
+  --bs-btn-padding-y: 18px;
+  --bs-border-radius: calc(var(--js-button-icon-size) * 0.25);
+  --bs-btn-font-family: var(--js-font-alpha);
+  --bs-btn-font-size: var(--js-font-size-jmd);
+  --bs-btn-font-weight: 400;
+  --bs-btn-line-height: 1.25;
+  --bs-btn-border-width: var(--bs-border-width);
+  --bs-btn-border-radius: var(--bs-border-radius);
+  --bs-btn-box-shadow: none;
+  --bs-btn-focus-box-shadow: none;
+
+  --js-button-icon-size: 54px;
+}
+
+.btn.js-button.customPadding {
+  --bs-btn-padding-y: 25px !important;
+}
+
+.btn.btn-sm {
+  --bs-btn-padding-x: 12px;
+  --bs-btn-padding-y: 12px;
+  --bs-btn-font-size: var(--js-font-size-jsm);
+  --js-button-icon-size: 40px;
+}
+
+.btn.btn-lg {
+  --bs-btn-padding-x: 10px;
+  --bs-btn-padding-y: 10px;
+}
+
+/* BUTTON COLOR VARIATIONS */
+.btn.js-button-primary {
+  --bs-btn-color: var(--js-dynamic-color-text-alpha);
+  --bs-btn-hover-color: var(--js-dynamic-color-text-alpha);
+  --bs-btn-active-color: var(--js-dynamic-color-text-alpha);
+
+  --bs-btn-bg: var(--js-dynamic-color-back-bravo);
+  --bs-btn-hover-bg: var(--js-dynamic-color-back-bravo);
+  --bs-btn-active-bg: var(--js-dynamic-color-back-bravo);
+
+  --bs-btn-border-color: var(--js-dynamic-color-back-bravo);
+  --bs-btn-hover-border-color: var(--js-dynamic-color-back-bravo);
+  --bs-btn-active-border-color: var(--js-dynamic-color-back-bravo);
+}
+
+.btn.js-button-bravo {
+  --bs-btn-color: var(--js-dynamic-color-text-bravo);
+  --bs-btn-hover-color: var(--js-dynamic-color-text-bravo);
+  --bs-btn-active-color: var(--js-dynamic-color-text-bravo);
+
+  --bs-btn-bg: var(--js-dynamic-color-back-fresh);
+  --bs-btn-hover-bg: var(--js-dynamic-color-back-fresh);
+  --bs-btn-active-bg: var(--js-dynamic-color-back-fresh);
+
+  --bs-btn-border-color: var(--js-dynamic-color-back-fresh);
+  --bs-btn-hover-border-color: var(--js-dynamic-color-back-fresh);
+  --bs-btn-active-border-color: var(--js-dynamic-color-back-fresh);
+}
+
+.btn.js-button-champ {
+  --bs-btn-color: var(--js-dynamic-button-text-color);
+  --bs-btn-hover-color: var(--js-dynamic-button-text-color);
+  --bs-btn-active-color: var(--js-dynamic-button-text-color);
+
+  --bs-btn-bg: var(--js-dynamic-button-back-color);
+  --bs-btn-hover-bg: var(--js-dynamic-button-back-color);
+  --bs-btn-active-bg: var(--js-dynamic-button-back-color);
+
+  --bs-btn-border-color: var(--js-dynamic-button-back-color);
+  --bs-btn-hover-border-color: var(--js-dynamic-button-back-color);
+  --bs-btn-active-border-color: var(--js-dynamic-button-back-color);
+}
+
+.btn.js-button-ghost {
+  --bs-btn-padding-x: 0;
+  --bs-btn-padding-y: 0;
+
+  --bs-btn-color: var(--js-body-text-color-alpha);
+  --bs-btn-hover-color: var(--js-body-text-color-alpha);
+  --bs-btn-active-color: var(--js-body-text-color-alpha);
+
+  --bs-btn-bg: transparent;
+  --bs-btn-hover-bg: transparent;
+  --bs-btn-active-bg: transparent;
+
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-border-color: transparent;
+  --bs-btn-active-border-color: transparent;
+}
+
+.btn.js-button-ghost .speakerBorder {
+  stroke: var(--js-header-speaker-mute-border);
+}
+
+.strokeBorder {
+  stroke: var(--js-meridian-toggle-back-color);
+}
+
+.btn.js-button-bravo.callControlsButtons {
+  --bs-btn-color: var(--js-dynamic-button-text-color);
+  --bs-btn-hover-color: var(--js-dynamic-button-text-color);
+  --bs-btn-active-color: var(--js-dynamic-button-text-color);
+}
+
+.btn.js-button.bottomButtons {
+  --bs-btn-color: var(--js-body-text-color-alpha);
+  --bs-btn-hover-color: var(--js-body-text-color-alpha);
+  --bs-btn-active-color: var(--js-body-text-color-alpha);
+}
+
+.btn.js-button-danger {
+  --bs-btn-color: var(--js-dynamic-color-text-alpha);
+  --bs-btn-hover-color: var(--js-dynamic-color-text-alpha);
+  --bs-btn-active-color: var(--js-dynamic-color-text-alpha);
+
+  --bs-btn-bg: var(--js-dynamic-color-back-delta);
+  --bs-btn-hover-bg: var(--js-dynamic-color-back-delta);
+  --bs-btn-active-bg: var(--js-dynamic-color-back-delta);
+
+  --bs-btn-border-color: var(--js-dynamic-color-back-delta);
+  --bs-btn-hover-border-color: var(--js-dynamic-color-back-delta);
+  --bs-btn-active-border-color: var(--js-dynamic-color-back-delta);
+}
+
+/* BUTTON WITH ONLY ICON */
+.btn.js-button-icon {
+  --bs-btn-padding-x: 0;
+  --bs-btn-padding-y: 0;
+  --bs-border-radius: calc(var(--js-button-icon-size) * 0.2);
+  --bs-btn-font-size: calc((var(--js-button-icon-size) * 50) / 100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--js-button-icon-size);
+  height: var(--js-button-icon-size);
+}
+
+.btn.js-button-icon .has-button-sub-frame {
+  /* width: 50%;
+  height: 50%; */
+}
+
+/* BUTTON WITH TEXT & ICON */
+.btn.js-button-texticon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-gap: 10px;
+}
+
+/* _ENDS_ >> BUTTON REBOOT STYLES << 19821 */
+
+@media (min-width: 1920px) {
+  .btn.js-button {
+    --bs-btn-padding-x: 15px;
+    --bs-btn-padding-y: 15px;
+    --js-button-icon-size: 80px;
+    --bs-btn-font-size: var(--js-font-size-3xl);
+  }
+
+  .btn.btn-sm {
+    --bs-btn-padding-x: 16px;
+    --bs-btn-padding-y: 16px;
+    --js-button-icon-size: 65px;
+  }
+
+  .btn.btn-lg {
+    --bs-btn-padding-x: 28px;
+    --bs-btn-padding-y: 28px;
+  }
+
+  .btn.js-button.dynamic-button {
+    --bs-btn-padding-x: 35px !important;
+    --bs-btn-padding-y: 25px !important;
+  }
+
+  .dynamic-dropdown {
+    .js-button {
+      --bs-btn-padding-x: 30px !important;
+      --bs-btn-padding-y: 24px !important;
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .btn.js-button {
+    --bs-btn-padding-x: 10px;
+    --bs-btn-padding-y: 10px;
+    --js-button-icon-size: 48px;
+  }
+
+  .btn.btn-sm {
+    --bs-btn-padding-x: 10px;
+    --bs-btn-padding-y: 10px;
+    --js-button-icon-size: 34px;
+  }
+}
+
+@media (max-width: 350px) {
+  .btn.js-button {
+    --js-button-icon-size: 36px;
+  }
+
+  .btn.btn-sm {
+    --js-button-icon-size: 28px;
+  }
+}

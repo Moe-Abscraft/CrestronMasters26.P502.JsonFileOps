@@ -1,0 +1,46 @@
+.js-card {
+    --js-card-back-color: var(--js-dynamic-color-back-alpha);
+    background-color: var(--js-card-back-color);
+    border-radius: 24px;
+    padding: 36px;
+    width: 100%;
+    border: none;
+}
+
+.js-card-full-height {
+    height: 100%;
+}
+
+/* CUSTOME STYLE FOR SINGLE PAGE COMPONENT */
+.js-card-rtr {
+    min-height: 350px;
+}
+
+@media (min-width: 1920px) {
+    .js-card {
+        --js-card-back-color: var(--js-dynamic-color-back-alpha);
+        background-color: var(--js-card-back-color);
+        border-radius: 36px;
+        padding: 48px;
+        width: 100%;
+        border: none;
+    }
+
+    .js-card-rtr {
+        min-height: 600px;
+    }
+}
+
+@media (max-width: 1199px) {
+    .js-card {
+        border-radius: 24px;
+        padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .js-card {
+        border-radius: 20px;
+        padding: 20px;
+    }
+}
