@@ -1,5 +1,4 @@
-﻿
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace CrestronMasters26.P502.JsonFileOps
 {
@@ -7,26 +6,26 @@ namespace CrestronMasters26.P502.JsonFileOps
     {
         // JSON uses  "roomName"  (camelCase).
         // C# uses     RoomName   (PascalCase).
-        // The [JsonProperty] attribute is the bridge.
-        [JsonProperty("roomName")]
+        // The [JsonPropertyName] attribute is the bridge.
+        [JsonPropertyName("roomName")]
         public string RoomName { get; set; } = "New Room";
 
-        [JsonProperty("autoShutdown")]
+        [JsonPropertyName("autoShutdown")]
         public bool AutoShutdown { get; set; } = true;
 
-        [JsonProperty("xPanelIpId")]
+        [JsonPropertyName("xPanelIpId")]
         public uint XPanelIpId { get; set; }
 
         // A JSON array of OBJECTS maps to a List of a nested class.
         // Initialized to an empty list so it's never null.
-        [JsonProperty("sources")]
+        [JsonPropertyName("sources")]
         public List<SourceInfo> Sources { get; set; } = new List<SourceInfo>();
 
-        [JsonProperty("displays")]
+        [JsonPropertyName("displays")]
         public List<DisplayInfo> Displays { get; set; } = new List<DisplayInfo>();
 
         // A JSON array of STRINGS maps to a List<string>.
-        [JsonProperty("presets")]
+        [JsonPropertyName("presets")]
         public List<string> Presets { get; set; } = new List<string>();
 
         [JsonIgnore]
@@ -35,25 +34,25 @@ namespace CrestronMasters26.P502.JsonFileOps
 
     public class SourceInfo
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; } = "";
 
         // JSON has no hex literal, so these are plain decimal — 0x1A is 26.
-        [JsonProperty("nvxIpid")]
+        [JsonPropertyName("nvxIpid")]
         public int NvxIpid { get; set; }
     }
 
     public class DisplayInfo
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; } = "";
 
         // Which display this is — "NEC", "Sharp", "Samsung" to load the correct driver.
-        [JsonProperty("model")]
+        [JsonPropertyName("model")]
         public string Model { get; set; } = "";
 
         // The decoder's IPID
-        [JsonProperty("nvxIpid")]
+        [JsonPropertyName("nvxIpid")]
         public int NvxIpid { get; set; }
 
         [JsonIgnore]

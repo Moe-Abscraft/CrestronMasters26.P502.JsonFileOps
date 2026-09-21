@@ -1,8 +1,6 @@
-﻿using Crestron.SimplSharp;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using Crestron.SimplSharp;
 using CrestronIO = Crestron.SimplSharp.CrestronIO;
 
 namespace CrestronMasters26.P502.JsonFileOps
@@ -46,7 +44,7 @@ namespace CrestronMasters26.P502.JsonFileOps
                     string json = File.ReadAllText(_filePath);
                     _loadedWriteTime = File.GetLastWriteTimeUtc(_filePath);
 
-                    RoomConfig? parsed = JsonConvert.DeserializeObject<RoomConfig>(json);
+                    RoomConfig? parsed = JsonSerializer.Deserialize<RoomConfig>(json);
 
                     if (parsed == null)
                     {
@@ -99,7 +97,7 @@ namespace CrestronMasters26.P502.JsonFileOps
 
         private void WriteConfig(RoomConfig config)
         {
-            File.WriteAllText(_filePath, JsonConvert.SerializeObject(config, Formatting.Indented));
+            File.WriteAllText(_filePath, JsonSerializer.Serialize(config, new JsonSerializerOptions() { WriteIndented = true }));
         }
 
         private static RoomConfig CreateDefault()

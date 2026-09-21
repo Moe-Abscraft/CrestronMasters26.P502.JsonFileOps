@@ -11,10 +11,8 @@ namespace CrestronMasters26.P502.JsonFileOps
     {
         private ConfigManager _configManager;
         private RoomConfig _roomConfig;
-
         private XpanelForHtml5 _xpanel;
         private UiHandler _uiHandler;
-
         public ControlSystem() : base()
         {
             Thread.MaxNumberOfUserThreads = 20;
@@ -23,7 +21,6 @@ namespace CrestronMasters26.P502.JsonFileOps
             CrestronEnvironment.ProgramStatusEventHandler += CrestronEnvironment_ProgramStatusEventHandler;
             CrestronEnvironment.EthernetEventHandler += CrestronEnvironment_EthernetEventHandler;
         }
-
 
         public override void InitializeSystem()
         {

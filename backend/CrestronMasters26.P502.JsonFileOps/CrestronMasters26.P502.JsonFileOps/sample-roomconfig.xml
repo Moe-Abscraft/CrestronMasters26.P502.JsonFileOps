@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+	<!--This is a comment-->
+	<roomName>Boardroom A</roomName>
+	<autoShutdown>true</autoShutdown>
+	<xPanelIpId>48</xPanelIpId>
+	<sources>
+		<name>Laptop HDMI</name>
+		<nvxIpid>3</nvxIpid>
+	</sources>
+	<sources>
+		<name>Room PC</name>
+		<nvxIpid>4</nvxIpid>
+	</sources>
+	<sources>
+		<name>Wireless BYOD</name>
+		<nvxIpid>5</nvxIpid>
+	</sources>
+	<displays>
+		<name>Left</name>
+		<model>NEC</model>
+		<nvxIpid>16</nvxIpid>
+	</displays>
+	<displays>
+		<name>Right</name>
+		<model>Sharp</model>
+		<nvxIpid>17</nvxIpid>
+	</displays>
+	<presets></presets>
+</root>

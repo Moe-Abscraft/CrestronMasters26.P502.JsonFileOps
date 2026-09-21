@@ -1,11 +1,77 @@
-//Serialize      object → JSON text (write out)
-//Deserialize    JSON text → object (read in)
+Problem: everyone has hard-coded a room name/IP/preset and had to recompile. 
+Let put the data out of the code
+JSON as: a standard way to write down structured data so it lives outside your code
+Show running example
 
-//roomName	    string	          string RoomName
-//autoShutdown	boolean	          bool AutoShutdown
-//sources	      array of objects	List<SourceInfo>
-//displays	    array of objects	List<DisplayInfo>
-//presets	      array of strings	List<string>
+What is Json: 
+JavaScript Object Notation
+Text format for structured data, 
+readable machine parsable language independent and the idea is to use key value pairs.
 
+The building blocks of Json: {}    "": six types    lowercase bool    no trailing commos 
+sample
+{
+    "roomName": "Boardroom A",
+    "xPanelIpId": 48,
+    "autoShutdown": true,
+    "sources": [
+        {
+            "name": "Laptop HDMI",
+            "nvxIpId": 3
+        },
+        {
+            "name": "Room PC",
+            "nvxIpId": 4
+        }
+    ],
+    "displays": [
+        {
+        "name": "Left",
+        "model": "NEC",
+        "nvxIpid": 16
+        },
+        {
+        "name": "Right",
+        "model": "Sharp",
+        "nvxIpid": 17
+        }
+    ],
+    "presets": null
+}
 
-// paste special
+show xml and compare
+Why Json? lighter, more human readable, XML can leave comments though
+
+maping to c-Sharp
+`````Json Object = Class
+`````Key = Property
+`````Array = List<T>
+`````Nested Object = Nested Classes
+
+Create MyJson.cs file
+Use paste special
+
+Add [JsonPropertyName("")]
+
+`````Serialize      object → JSON text (write out)
+`````Deserialize    JSON text → object (read in)
+
+if using Net 48 use NewtonSoft.Json otherwiese System.Text.Json
+Its builtin, modern default no additional library, and we are not using the advanced features for newtonsoft like...
+
+File Ops:
+`````Read > Deserialize > use,change > Serialize > Write Back
+`````Use Processor specific file path not windows 
+`````First run generate a default one
+
+`````Threads colliding: CCriticalSection same as lock
+CCriticalSection equal to StartFileOperations in SIMPL+
+Release = EndFileOperations
+
+`````Power Loss: Write to a temp file then move
+
+Walk through the code
+
+Deadlock: place the _lock.leave() not in finally
+If there is an exception and code doesnt leave
+

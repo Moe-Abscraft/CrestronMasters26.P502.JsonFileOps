@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CrestronMasters26.P502.JsonFileOps.UI
 {
-    internal class UiHandler
+    internal partial class UiHandler
     {
         List<BasicTriListWithSmartObject> _uiList = new List<BasicTriListWithSmartObject>();
         Contract _contract;
@@ -30,21 +30,10 @@ namespace CrestronMasters26.P502.JsonFileOps.UI
             {
                 _uiList.Add(ui);
                 _contract.AddDevice(ui);
-                _contract.System.ReloadConfig += System_ReloadConfig;
-                _contract.Sources.Select += Sources_Select;
-                _contract.System.AutoUpdate += System_AutoUpdate;
-            }
-        }
 
-        private void System_AutoUpdate(object? sender, UIEventArgs e)
-        {
-            if(e.SigArgs.Sig.BoolValue)
-            {
-                _autoUpdateEnabled = !_autoUpdateEnabled;
-                _configManager?.EnableAutoUpdate(_autoUpdateEnabled);
+                InitializeSourcesContract();
+                InitializeSystemContract();
             }
-
-            _contract.System.AutoUpdate_Fb((sig, d) => sig.BoolValue = _autoUpdateEnabled);
         }
 
         public void UpdateUi(RoomConfig? roomConfig)
@@ -83,22 +72,6 @@ namespace CrestronMasters26.P502.JsonFileOps.UI
             _contract.System.LastUpdatedTime((sig, d) => sig.StringValue = roomConfig.LastReadTime.ToString("yyyy-MM-dd HH:mm:ss"));
         }
 
-        private void Sources_Select(object? sender, UIEventArgs e)
-        {
-            int src = e.SigArgs.Sig.UShortValue;
-
-            if (_roomConfig == null || src < 0 || src > _roomConfig.Sources.Count)
-                return;
-
-            _selectedSource = src;
-
-            // Real system: call your NVX routing here. This example fakes the feedback.
-            string routed = src == 0 ? string.Empty : _roomConfig.Sources[src - 1].Name;
-            _roomConfig.Displays.ForEach(d => d.RoutedSource = routed);
-
-            PushRouting();
-        }
-
         private void PushRouting()
         {
             string routed = _selectedSource == 0 || _roomConfig == null
@@ -110,12 +83,6 @@ namespace CrestronMasters26.P502.JsonFileOps.UI
 
             ushort selected = (ushort)_selectedSource;
             _contract.Sources.Selected((sig, s) => sig.UShortValue = selected);
-        }
-
-        private void System_ReloadConfig(object? sender, UIEventArgs e)
-        {
-            if (e.SigArgs.Sig.BoolValue)
-                _configManager?.Load();
         }
     }
 }
