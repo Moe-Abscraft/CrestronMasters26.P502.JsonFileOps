@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace CrestronMasters26.P502.JsonFileOps
 {
@@ -24,16 +24,17 @@ namespace CrestronMasters26.P502.JsonFileOps
         [JsonPropertyName("displays")]
         public List<DisplayInfo> Displays { get; set; } = new List<DisplayInfo>();
 
-        // A JSON array of STRINGS maps to a List<string>.
-        [JsonPropertyName("presets")]
-        public List<string> Presets { get; set; } = new List<string>();
-
         [JsonIgnore]
         public DateTime LastReadTime { get; set; } = DateTime.Now;
     }
 
     public class SourceInfo
     {
+        // What presets remember. The name is for people and can be edited freely; the id
+        // must never change once presets have been saved, or they lose track of it.
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
         [JsonPropertyName("name")]
         public string Name { get; set; } = "";
 
@@ -44,6 +45,10 @@ namespace CrestronMasters26.P502.JsonFileOps
 
     public class DisplayInfo
     {
+        // Same rule as SourceInfo.Id: rename the display all you like, keep the id.
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
         [JsonPropertyName("name")]
         public string Name { get; set; } = "";
 
@@ -55,8 +60,8 @@ namespace CrestronMasters26.P502.JsonFileOps
         [JsonPropertyName("nvxIpid")]
         public int NvxIpid { get; set; }
 
+        // The id of the source on this display, 0 when cleared.
         [JsonIgnore]
-        public string RoutedSource { get; set; } = "";
+        public int RoutedSourceId { get; set; }
     }
-
 }

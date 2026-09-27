@@ -1,0 +1,20 @@
+{
+  "roomName": "Boardroom A",
+  "xPanelIpId": 48,
+  "autoShutdownEnabled": true,
+  "sources": [
+    {
+      "name": "Laptop 1",
+      "nvxIpId": 3
+    },
+    {
+      "name": "Laptop 3",
+      "nvxIpId": 4
+    },
+    {
+      "name": "Laptop 3",
+      "nvxIpId": 5
+    }
+  ],
+  "presets": null
+}

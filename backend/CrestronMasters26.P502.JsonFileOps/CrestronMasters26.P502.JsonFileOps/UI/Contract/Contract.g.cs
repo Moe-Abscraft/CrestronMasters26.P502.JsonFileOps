@@ -31,6 +31,9 @@ namespace AppContract
         public AppContract.ISources Sources { get { return (AppContract.ISources)InternalSources; } }
         private AppContract.Sources InternalSources { get; set; }
 
+        public AppContract.IAudio Audio { get { return (AppContract.IAudio)InternalAudio; } }
+        private AppContract.Audio InternalAudio { get; set; }
+
         #endregion
 
         #region Construction and Initialization
@@ -53,8 +56,9 @@ namespace AppContract
             ComponentMediator = new ComponentMediator();
 
             InternalSystem = new AppContract.System(ComponentMediator, 1);
-            InternalDisplays = new AppContract.Displays(ComponentMediator, 2);
-            InternalSources = new AppContract.Sources(ComponentMediator, 13);
+            InternalDisplays = new AppContract.Displays(ComponentMediator, 7);
+            InternalSources = new AppContract.Sources(ComponentMediator, 18);
+            InternalAudio = new AppContract.Audio(ComponentMediator, 29);
 
             for (int index = 0; index < devices.Length; index++)
             {
@@ -73,6 +77,7 @@ namespace AppContract
             InternalSystem.AddDevice(device);
             InternalDisplays.AddDevice(device);
             InternalSources.AddDevice(device);
+            InternalAudio.AddDevice(device);
         }
 
         public void RemoveDevice(BasicTriListWithSmartObject device)
@@ -80,6 +85,7 @@ namespace AppContract
             InternalSystem.RemoveDevice(device);
             InternalDisplays.RemoveDevice(device);
             InternalSources.RemoveDevice(device);
+            InternalAudio.RemoveDevice(device);
         }
 
         #endregion
@@ -98,6 +104,7 @@ namespace AppContract
             InternalSystem.Dispose();
             InternalDisplays.Dispose();
             InternalSources.Dispose();
+            InternalAudio.Dispose();
             ComponentMediator.Dispose(); 
         }
 

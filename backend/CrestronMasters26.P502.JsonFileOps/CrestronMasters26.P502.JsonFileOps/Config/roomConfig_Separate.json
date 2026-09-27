@@ -1,0 +1,36 @@
+{
+  "roomName": "Boardroom A",
+  "autoShutdown": true,
+  "xPanelIpId": 48,
+  "sources": [
+    {
+      "id": 1,
+      "name": "Laptop HDMI",
+      "nvxIpid": 3
+    },
+    {
+      "id": 2,
+      "name": "Room PC",
+      "nvxIpid": 4
+    },
+    {
+      "id": 3,
+      "name": "Wireless BYOD",
+      "nvxIpid": 5
+    }
+  ],
+  "displays": [
+    {
+      "id": 1,
+      "name": "Left",
+      "model": "NEC",
+      "nvxIpid": 16
+    },
+    {
+      "id": 2,
+      "name": "Right",
+      "model": "Sharp",
+      "nvxIpid": 17
+    }
+  ]
+}

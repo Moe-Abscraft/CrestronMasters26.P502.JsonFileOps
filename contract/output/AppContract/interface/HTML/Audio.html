@@ -1,0 +1,12 @@
+<template id="AppContract.Audio.Audio">
+	<div id="Audio.Audio">
+	 		<ch5-button sendEventOnClick="Audio.Source_Mute" receiveStateSelected="Audio.Source_Muted">
+        	</ch5-button>
+	 		<ch5-slider sendEventOnChange="Audio.Source_Level" receiveStateValue="Audio.Source_Level_Fb">
+        	</ch5-slider>
+	 		<ch5-button sendEventOnClick="Audio.Mic_Mute" receiveStateSelected="Audio.Mic_Muted">
+        	</ch5-button>
+	 		<ch5-slider sendEventOnChange="Audio.Mic_Level" receiveStateValue="Audio.Mic_Level_Fb">
+        	</ch5-slider>
+	 </div>
+</template>

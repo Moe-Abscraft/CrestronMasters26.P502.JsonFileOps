@@ -12,10 +12,14 @@ namespace AppContract
 
         event EventHandler<UIEventArgs> ReloadConfig;
         event EventHandler<UIEventArgs> AutoUpdate;
+        event EventHandler<UIEventArgs> Separate;
+        event EventHandler<UIEventArgs> Combine;
 
         void AutoUpdate_Fb(SystemBoolInputSigDelegate callback);
         void LastUpdatedTime(SystemStringInputSigDelegate callback);
+        void Message(SystemStringInputSigDelegate callback);
 
+        AppContract.IaPreset[] aPreset { get; }
     }
 
     public delegate void SystemBoolInputSigDelegate(BoolInputSig boolInputSig, ISystem system);
@@ -44,6 +48,8 @@ namespace AppContract
             {
                 public const uint ReloadConfig = 1;
                 public const uint AutoUpdate = 2;
+                public const uint Separate = 3;
+                public const uint Combine = 4;
 
                 public const uint AutoUpdate_Fb = 2;
             }
@@ -51,6 +57,7 @@ namespace AppContract
             {
 
                 public const uint LastUpdatedTime = 1;
+                public const uint Message = 2;
             }
         }
 
@@ -64,6 +71,14 @@ namespace AppContract
             Initialize(controlJoinId);
         }
 
+        private static readonly IDictionary<uint, List<uint>> APresetSmartObjectIdMappings = new Dictionary<uint, List<uint>> {
+            { 1, new List<uint> { 2, 3, 4, 5, 6 } }};
+
+        internal static void ClearDictionaries()
+        {
+            APresetSmartObjectIdMappings.Clear();
+        }
+
         private void Initialize(uint controlJoinId)
         {
             ControlJoinId = controlJoinId; 
@@ -72,6 +87,15 @@ namespace AppContract
  
             ComponentMediator.ConfigureBooleanEvent(controlJoinId, Joins.Booleans.ReloadConfig, onReloadConfig);
             ComponentMediator.ConfigureBooleanEvent(controlJoinId, Joins.Booleans.AutoUpdate, onAutoUpdate);
+            ComponentMediator.ConfigureBooleanEvent(controlJoinId, Joins.Booleans.Separate, onSeparate);
+            ComponentMediator.ConfigureBooleanEvent(controlJoinId, Joins.Booleans.Combine, onCombine);
+
+            List<uint> aPresetList = APresetSmartObjectIdMappings[controlJoinId];
+            aPreset = new AppContract.IaPreset[aPresetList.Count];
+            for (int index = 0; index < aPresetList.Count; index++)
+            {
+                aPreset[index] = new AppContract.aPreset(ComponentMediator, aPresetList[index]); 
+            }
 
         }
 
@@ -79,17 +103,27 @@ namespace AppContract
         {
             Devices.Add(device);
             ComponentMediator.HookSmartObjectEvents(device.SmartObjects[ControlJoinId]);
+            for (int index = 0; index < aPreset.Length; index++)
+            {
+                ((AppContract.aPreset)aPreset[index]).AddDevice(device);
+            }
         }
 
         public void RemoveDevice(BasicTriListWithSmartObject device)
         {
             Devices.Remove(device);
             ComponentMediator.UnHookSmartObjectEvents(device.SmartObjects[ControlJoinId]);
+            for (int index = 0; index < aPreset.Length; index++)
+            {
+                ((AppContract.aPreset)aPreset[index]).RemoveDevice(device);
+            }
         }
 
         #endregion
 
         #region CH5 Contract
+
+        public AppContract.IaPreset[] aPreset { get; private set; }
 
         public event EventHandler<UIEventArgs> ReloadConfig;
         private void onReloadConfig(SmartObjectEventArgs eventArgs)
@@ -103,6 +137,22 @@ namespace AppContract
         private void onAutoUpdate(SmartObjectEventArgs eventArgs)
         {
             EventHandler<UIEventArgs> handler = AutoUpdate;
+            if (handler != null)
+                handler(this, UIEventArgs.CreateEventArgs(eventArgs));
+        }
+
+        public event EventHandler<UIEventArgs> Separate;
+        private void onSeparate(SmartObjectEventArgs eventArgs)
+        {
+            EventHandler<UIEventArgs> handler = Separate;
+            if (handler != null)
+                handler(this, UIEventArgs.CreateEventArgs(eventArgs));
+        }
+
+        public event EventHandler<UIEventArgs> Combine;
+        private void onCombine(SmartObjectEventArgs eventArgs)
+        {
+            EventHandler<UIEventArgs> handler = Combine;
             if (handler != null)
                 handler(this, UIEventArgs.CreateEventArgs(eventArgs));
         }
@@ -122,6 +172,14 @@ namespace AppContract
             for (int index = 0; index < Devices.Count; index++)
             {
                 callback(Devices[index].SmartObjects[ControlJoinId].StringInput[Joins.Strings.LastUpdatedTime], this);
+            }
+        }
+
+        public void Message(SystemStringInputSigDelegate callback)
+        {
+            for (int index = 0; index < Devices.Count; index++)
+            {
+                callback(Devices[index].SmartObjects[ControlJoinId].StringInput[Joins.Strings.Message], this);
             }
         }
 
@@ -152,8 +210,15 @@ namespace AppContract
 
             IsDisposed = true;
 
+            for (int index = 0; index < aPreset.Length; index++)
+            {
+                ((AppContract.aPreset)aPreset[index]).Dispose();
+            }
+
             ReloadConfig = null;
             AutoUpdate = null;
+            Separate = null;
+            Combine = null;
         }
 
         #endregion

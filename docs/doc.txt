@@ -1,0 +1,12 @@
+
+Json Object		=> Class
+Key				=> Property
+Array			=> List<T>
+Nested Object	=> Nested Classes
+
+```````````````````````````````````````````
+Serialize		object → JSON text (write out)
+Deserialize		JSON text → object (read in)
+
+Net48			Newtonsoft.Json
+Net8			System.Text.Json

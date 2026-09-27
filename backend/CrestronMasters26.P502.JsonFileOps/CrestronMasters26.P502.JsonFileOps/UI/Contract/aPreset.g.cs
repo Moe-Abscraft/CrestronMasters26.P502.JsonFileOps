@@ -6,14 +6,19 @@ using Crestron.SimplSharpPro;
 
 namespace AppContract
 {
-    public interface IDisplays
+    public interface IaPreset
     {
         object UserObject { get; set; }
 
-        AppContract.IDisplay[] Display { get; }
+        event EventHandler<UIEventArgs> Press;
+        event EventHandler<UIEventArgs> Hold;
+
+
     }
 
-    internal class Displays : IDisplays, IDisposable
+    public delegate void aPresetBoolInputSigDelegate(BoolInputSig boolInputSig, IaPreset aPreset);
+
+    internal class aPreset : IaPreset, IDisposable
     {
         #region Standard CH5 Component members
 
@@ -32,24 +37,22 @@ namespace AppContract
 
         private static class Joins
         {
+            internal static class Booleans
+            {
+                public const uint Press = 1;
+                public const uint Hold = 2;
+
+            }
         }
 
         #endregion
 
         #region Construction and Initialization
 
-        internal Displays(ComponentMediator componentMediator, uint controlJoinId)
+        internal aPreset(ComponentMediator componentMediator, uint controlJoinId)
         {
             ComponentMediator = componentMediator;
             Initialize(controlJoinId);
-        }
-
-        private static readonly IDictionary<uint, List<uint>> DisplaySmartObjectIdMappings = new Dictionary<uint, List<uint>> {
-            { 7, new List<uint> { 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 } }};
-
-        internal static void ClearDictionaries()
-        {
-            DisplaySmartObjectIdMappings.Clear();
         }
 
         private void Initialize(uint controlJoinId)
@@ -58,12 +61,8 @@ namespace AppContract
  
             _devices = new List<BasicTriListWithSmartObject>(); 
  
-            List<uint> displayList = DisplaySmartObjectIdMappings[controlJoinId];
-            Display = new AppContract.IDisplay[displayList.Count];
-            for (int index = 0; index < displayList.Count; index++)
-            {
-                Display[index] = new AppContract.Display(ComponentMediator, displayList[index]); 
-            }
+            ComponentMediator.ConfigureBooleanEvent(controlJoinId, Joins.Booleans.Press, onPress);
+            ComponentMediator.ConfigureBooleanEvent(controlJoinId, Joins.Booleans.Hold, onHold);
 
         }
 
@@ -71,27 +70,34 @@ namespace AppContract
         {
             Devices.Add(device);
             ComponentMediator.HookSmartObjectEvents(device.SmartObjects[ControlJoinId]);
-            for (int index = 0; index < Display.Length; index++)
-            {
-                ((AppContract.Display)Display[index]).AddDevice(device);
-            }
         }
 
         public void RemoveDevice(BasicTriListWithSmartObject device)
         {
             Devices.Remove(device);
             ComponentMediator.UnHookSmartObjectEvents(device.SmartObjects[ControlJoinId]);
-            for (int index = 0; index < Display.Length; index++)
-            {
-                ((AppContract.Display)Display[index]).RemoveDevice(device);
-            }
         }
 
         #endregion
 
         #region CH5 Contract
 
-        public AppContract.IDisplay[] Display { get; private set; }
+        public event EventHandler<UIEventArgs> Press;
+        private void onPress(SmartObjectEventArgs eventArgs)
+        {
+            EventHandler<UIEventArgs> handler = Press;
+            if (handler != null)
+                handler(this, UIEventArgs.CreateEventArgs(eventArgs));
+        }
+
+        public event EventHandler<UIEventArgs> Hold;
+        private void onHold(SmartObjectEventArgs eventArgs)
+        {
+            EventHandler<UIEventArgs> handler = Hold;
+            if (handler != null)
+                handler(this, UIEventArgs.CreateEventArgs(eventArgs));
+        }
+
 
         #endregion
 
@@ -104,7 +110,7 @@ namespace AppContract
 
         public override string ToString()
         {
-            return string.Format("Contract: {0} Component: {1} HashCode: {2} {3}", "Displays", GetType().Name, GetHashCode(), UserObject != null ? "UserObject: " + UserObject : null);
+            return string.Format("Contract: {0} Component: {1} HashCode: {2} {3}", "aPreset", GetType().Name, GetHashCode(), UserObject != null ? "UserObject: " + UserObject : null);
         }
 
         #endregion
@@ -120,10 +126,8 @@ namespace AppContract
 
             IsDisposed = true;
 
-            for (int index = 0; index < Display.Length; index++)
-            {
-                ((AppContract.Display)Display[index]).Dispose();
-            }
+            Press = null;
+            Hold = null;
         }
 
         #endregion

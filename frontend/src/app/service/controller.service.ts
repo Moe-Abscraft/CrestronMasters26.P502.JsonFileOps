@@ -27,9 +27,18 @@ export const DISPLAY_COUNT = 10;
  * These strings are resolved to joins by the panel / WebXPanel using the
  * contract file -- never by CrComLib itself, so they must match exactly.
  */
+/** Analog joins are 0-65535 end to end, sliders included. */
+export const MAX_LEVEL = 65535;
+
 export const Contract = {
   // states: control system -> panel
   LastUpdatedTime: 'System.LastUpdatedTime',
+  Message: 'System.Message',
+  AutoUpdateFb: 'System.AutoUpdate_Fb',
+  AudioSourceMuted: 'Audio.Source_Muted',
+  AudioMicMuted: 'Audio.Mic_Muted',
+  AudioSourceLevelFb: 'Audio.Source_Level_Fb',
+  AudioMicLevelFb: 'Audio.Mic_Level_Fb',
   SourceName: (i: number) => `Sources.Source[${i}].Name`,
   SourcesSelected: 'Sources.Selected',
   DisplayName: (i: number) => `Displays.Display[${i}].Name`,
@@ -38,6 +47,11 @@ export const Contract = {
 
   // events: panel -> control system
   ReloadConfig: 'System.ReloadConfig',
+  AutoUpdate: 'System.AutoUpdate',
+  AudioSourceMute: 'Audio.Source_Mute',
+  AudioMicMute: 'Audio.Mic_Mute',
+  AudioSourceLevel: 'Audio.Source_Level',
+  AudioMicLevel: 'Audio.Mic_Level',
   SourcesSelect: 'Sources.Select',
   DisplaySelect: (i: number) => `Displays.Display[${i}].Select`,
   DisplayClear: (i: number) => `Displays.Display[${i}].Clear`,
@@ -85,6 +99,25 @@ export class ControllerService {
   lastUpdatedTime = '';
   lastUpdatedTimeChanged: Subject<string> = new Subject<string>();
 
+  /** Empty when the config loaded cleanly; otherwise the banner text to show. */
+  message = '';
+  messageChanged: Subject<string> = new Subject<string>();
+
+  autoUpdate = false;
+  autoUpdateChanged: Subject<boolean> = new Subject<boolean>();
+
+  sourceMuted = false;
+  sourceMutedChanged: Subject<boolean> = new Subject<boolean>();
+
+  micMuted = false;
+  micMutedChanged: Subject<boolean> = new Subject<boolean>();
+
+  sourceLevel = 0;
+  sourceLevelChanged: Subject<number> = new Subject<number>();
+
+  micLevel = 0;
+  micLevelChanged: Subject<number> = new Subject<number>();
+
   constructor() {
     console.log('Controller Service Started');
 
@@ -112,6 +145,36 @@ export class ControllerService {
     CrComLib.subscribeState('s', Contract.LastUpdatedTime, (value: string) => {
       this.lastUpdatedTime = value ?? '';
       this.lastUpdatedTimeChanged.next(this.lastUpdatedTime);
+    });
+
+    CrComLib.subscribeState('s', Contract.Message, (value: string) => {
+      this.message = value ?? '';
+      this.messageChanged.next(this.message);
+    });
+
+    CrComLib.subscribeState('b', Contract.AutoUpdateFb, (value: boolean) => {
+      this.autoUpdate = !!value;
+      this.autoUpdateChanged.next(this.autoUpdate);
+    });
+
+    CrComLib.subscribeState('b', Contract.AudioSourceMuted, (value: boolean) => {
+      this.sourceMuted = !!value;
+      this.sourceMutedChanged.next(this.sourceMuted);
+    });
+
+    CrComLib.subscribeState('b', Contract.AudioMicMuted, (value: boolean) => {
+      this.micMuted = !!value;
+      this.micMutedChanged.next(this.micMuted);
+    });
+
+    CrComLib.subscribeState('n', Contract.AudioSourceLevelFb, (value: number) => {
+      this.sourceLevel = value ?? 0;
+      this.sourceLevelChanged.next(this.sourceLevel);
+    });
+
+    CrComLib.subscribeState('n', Contract.AudioMicLevelFb, (value: number) => {
+      this.micLevel = value ?? 0;
+      this.micLevelChanged.next(this.micLevel);
     });
 
     CrComLib.subscribeState('n', Contract.SourcesSelected, (value: number) => {
@@ -157,6 +220,36 @@ export class ControllerService {
   /** Ask the control system to re-read the room config from disk. */
   reloadConfig() {
     this.pulseDigital(Contract.ReloadConfig);
+  }
+
+  /** Ask the control system to flip auto update; the button follows AutoUpdate_Fb. */
+  toggleAutoUpdate() {
+    this.pulseDigital(Contract.AutoUpdate);
+  }
+
+  // Audio. Every one of these only sends the press -- the button and slider positions
+  // come back from the control system, which gets them from the device. Never paint the
+  // new state locally and hope it matches.
+
+  toggleSourceMute() {
+    this.pulseDigital(Contract.AudioSourceMute);
+  }
+
+  toggleMicMute() {
+    this.pulseDigital(Contract.AudioMicMute);
+  }
+
+  setSourceLevel(level: number) {
+    this.sendAnalog(Contract.AudioSourceLevel, this.clampLevel(level));
+  }
+
+  setMicLevel(level: number) {
+    this.sendAnalog(Contract.AudioMicLevel, this.clampLevel(level));
+  }
+
+  private clampLevel(level: number): number {
+    if (!Number.isFinite(level)) return 0;
+    return Math.max(0, Math.min(MAX_LEVEL, Math.round(level)));
   }
 
   /** Route a source everywhere. The contract event is 1-based. */

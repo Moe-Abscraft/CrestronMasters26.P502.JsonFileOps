@@ -1,3 +1,6 @@
+Problem 
+
+
 Problem: everyone has hard-coded a room name/IP/preset and had to recompile. 
 Let put the data out of the code
 JSON as: a standard way to write down structured data so it lives outside your code
@@ -43,6 +46,7 @@ show xml and compare
 Why Json? lighter, more human readable, XML can leave comments though
 
 maping to c-Sharp
+show note.txt
 `````Json Object = Class
 `````Key = Property
 `````Array = List<T>
@@ -52,12 +56,15 @@ Create MyJson.cs file
 Use paste special
 
 Add [JsonPropertyName("")]
+string? or default value
+shortcut = prop
 
 `````Serialize      object → JSON text (write out)
 `````Deserialize    JSON text → object (read in)
 
 if using Net 48 use NewtonSoft.Json otherwiese System.Text.Json
-Its builtin, modern default no additional library, and we are not using the advanced features for newtonsoft like...
+Its builtin, modern default no additional library, and we are not using the advanced features for NewtonSoft
+System.Text.Json is more modern api used
 
 File Ops:
 `````Read > Deserialize > use,change > Serialize > Write Back
@@ -75,3 +82,8 @@ Walk through the code
 Deadlock: place the _lock.leave() not in finally
 If there is an exception and code doesnt leave
 
+SHould I add Json Vlaidation or too much?
+Json Validation 
+Access Json properties
+Lamda
+Try Catch

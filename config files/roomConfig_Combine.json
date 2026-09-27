@@ -1,0 +1,58 @@
+{
+  "roomName": "Boardroom A + B",
+  "autoShutdown": true,
+  "xPanelIpId": 48,
+  "sources": [
+    {
+      "id": 1,
+      "name": "Laptop HDMI",
+      "nvxIpid": 3
+    },
+    {
+      "id": 2,
+      "name": "Room PC",
+      "nvxIpid": 4
+    },
+    {
+      "id": 3,
+      "name": "Wireless BYOD",
+      "nvxIpid": 5
+    },
+    {
+      "id": 4,
+      "name": "Room B Laptop",
+      "nvxIpid": 6
+    },
+    {
+      "id": 5,
+      "name": "Room B PC",
+      "nvxIpid": 7
+    }
+  ],
+  "displays": [
+    {
+      "id": 1,
+      "name": "A Left",
+      "model": "NEC",
+      "nvxIpid": 16
+    },
+    {
+      "id": 2,
+      "name": "A Right",
+      "model": "Sharp",
+      "nvxIpid": 17
+    },
+    {
+      "id": 3,
+      "name": "B Left",
+      "model": "Samsung",
+      "nvxIpid": 18
+    },
+    {
+      "id": 4,
+      "name": "B Right",
+      "model": "Samsung",
+      "nvxIpid": 19
+    }
+  ]
+}

@@ -57,7 +57,7 @@ namespace AppContract
         }
 
         private static readonly IDictionary<uint, List<uint>> SourceSmartObjectIdMappings = new Dictionary<uint, List<uint>> {
-            { 13, new List<uint> { 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 } }};
+            { 18, new List<uint> { 19, 20, 21, 22, 23, 24, 25, 26, 27, 28 } }};
 
         internal static void ClearDictionaries()
         {

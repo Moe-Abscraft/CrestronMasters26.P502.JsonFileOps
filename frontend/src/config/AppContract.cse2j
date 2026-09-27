@@ -1,19 +1,33 @@
 {
 	"name": "AppContract",
-	"timestamp": "2026-08-27 14:29:33.483",
+	"timestamp": "2026-09-23 12:16:07.528",
 	"version": "1.0.0.0",
 	"schema_version": 1,
 	"extra_value": "",
 	"signals": {
 		"states": {
+			"boolean": {
+				"1": {
+					"2": "System.AutoUpdate_Fb"
+				},
+				"24": {
+					"1": "Audio.Source_Muted",
+					"2": "Audio.Mic_Muted"
+				}
+			},
 			"numeric": {
 				"13": {
 					"1": "Sources.Selected"
+				},
+				"24": {
+					"1": "Audio.Source_Level_Fb",
+					"2": "Audio.Mic_Level_Fb"
 				}
 			},
 			"string": {
 				"1": {
-					"1": "System.LastUpdatedTime"
+					"1": "System.LastUpdatedTime",
+					"2": "System.Message"
 				},
 				"3": {
 					"1": "Displays.Display[0].Name",
@@ -103,6 +117,18 @@
 					"joinId": 1,
 					"smartObjectId": 1
 				},
+				"System.AutoUpdate": {
+					"joinId": 2,
+					"smartObjectId": 1
+				},
+				"Audio.Source_Mute": {
+					"joinId": 1,
+					"smartObjectId": 24
+				},
+				"Audio.Mic_Mute": {
+					"joinId": 2,
+					"smartObjectId": 24
+				},
 				"Displays.Display[0].Select": {
 					"joinId": 1,
 					"smartObjectId": 3
@@ -188,6 +214,14 @@
 				"Sources.Select": {
 					"joinId": 1,
 					"smartObjectId": 13
+				},
+				"Audio.Source_Level": {
+					"joinId": 1,
+					"smartObjectId": 24
+				},
+				"Audio.Mic_Level": {
+					"joinId": 2,
+					"smartObjectId": 24
 				}
 			}
 		}

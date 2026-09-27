@@ -5,5 +5,21 @@
 	 	<span data-ch5-textcontent="System.LastUpdatedTime">Label</span>
 	 		<ch5-button sendEventOnClick="System.AutoUpdate" receiveStateSelected="System.AutoUpdate_Fb">
         	</ch5-button>
+	 	<span data-ch5-textcontent="System.Message">Label</span>
+	 		<ch5-button sendEventOnClick="System.Separate">
+        	</ch5-button>
+	 		<ch5-button sendEventOnClick="System.Combine">
+        	</ch5-button>
+	 	<ch5-list id="System.aPreset.aPreset" indexId="idx2" size="5" orientation="horizontal">
+ 	 	 <template>
+ 	 	 <div class="horizontal-list-item">
+	 		<ch5-button sendEventOnClick="System.aPreset[{{idx2}}].Press">
+        	</ch5-button>
+	 		<ch5-button sendEventOnClick="System.aPreset[{{idx2}}].Hold">
+        	</ch5-button>
+	 	 </div> 
+ 	 	</template>
+ 	</ch5-list>
+
 	 </div>
 </template>

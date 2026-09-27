@@ -1,6 +1,6 @@
 {
 	"name": "AppContract",
-	"timestamp": "2026-09-14 15:04:57.640",
+	"timestamp": "2026-09-27 16:31:35.424",
 	"version": "1.0.0.0",
 	"schema_version": 1,
 	"extra_value": "",
@@ -9,95 +9,104 @@
 			"boolean": {
 				"1": {
 					"2": "System.AutoUpdate_Fb"
+				},
+				"29": {
+					"1": "Audio.Source_Muted",
+					"2": "Audio.Mic_Muted"
 				}
 			},
 			"numeric": {
-				"13": {
+				"18": {
 					"1": "Sources.Selected"
+				},
+				"29": {
+					"1": "Audio.Source_Level_Fb",
+					"2": "Audio.Mic_Level_Fb"
 				}
 			},
 			"string": {
 				"1": {
-					"1": "System.LastUpdatedTime"
+					"1": "System.LastUpdatedTime",
+					"2": "System.Message"
 				},
-				"3": {
+				"8": {
 					"1": "Displays.Display[0].Name",
 					"2": "Displays.Display[0].Model",
 					"3": "Displays.Display[0].RoutedSource"
 				},
-				"4": {
+				"9": {
 					"1": "Displays.Display[1].Name",
 					"2": "Displays.Display[1].Model",
 					"3": "Displays.Display[1].RoutedSource"
 				},
-				"5": {
+				"10": {
 					"1": "Displays.Display[2].Name",
 					"2": "Displays.Display[2].Model",
 					"3": "Displays.Display[2].RoutedSource"
 				},
-				"6": {
+				"11": {
 					"1": "Displays.Display[3].Name",
 					"2": "Displays.Display[3].Model",
 					"3": "Displays.Display[3].RoutedSource"
 				},
-				"7": {
+				"12": {
 					"1": "Displays.Display[4].Name",
 					"2": "Displays.Display[4].Model",
 					"3": "Displays.Display[4].RoutedSource"
 				},
-				"8": {
+				"13": {
 					"1": "Displays.Display[5].Name",
 					"2": "Displays.Display[5].Model",
 					"3": "Displays.Display[5].RoutedSource"
 				},
-				"9": {
+				"14": {
 					"1": "Displays.Display[6].Name",
 					"2": "Displays.Display[6].Model",
 					"3": "Displays.Display[6].RoutedSource"
 				},
-				"10": {
+				"15": {
 					"1": "Displays.Display[7].Name",
 					"2": "Displays.Display[7].Model",
 					"3": "Displays.Display[7].RoutedSource"
 				},
-				"11": {
+				"16": {
 					"1": "Displays.Display[8].Name",
 					"2": "Displays.Display[8].Model",
 					"3": "Displays.Display[8].RoutedSource"
 				},
-				"12": {
+				"17": {
 					"1": "Displays.Display[9].Name",
 					"2": "Displays.Display[9].Model",
 					"3": "Displays.Display[9].RoutedSource"
 				},
-				"14": {
+				"19": {
 					"1": "Sources.Source[0].Name"
 				},
-				"15": {
+				"20": {
 					"1": "Sources.Source[1].Name"
 				},
-				"16": {
+				"21": {
 					"1": "Sources.Source[2].Name"
 				},
-				"17": {
+				"22": {
 					"1": "Sources.Source[3].Name"
 				},
-				"18": {
+				"23": {
 					"1": "Sources.Source[4].Name"
 				},
-				"19": {
+				"24": {
 					"1": "Sources.Source[5].Name"
 				},
-				"20": {
+				"25": {
 					"1": "Sources.Source[6].Name"
 				},
-				"21": {
+				"26": {
 					"1": "Sources.Source[7].Name"
 				},
-				"22": {
+				"27": {
 					"1": "Sources.Source[8].Name"
 				},
-				"23": {
+				"28": {
 					"1": "Sources.Source[9].Name"
 				}
 			}
@@ -112,91 +121,155 @@
 					"joinId": 2,
 					"smartObjectId": 1
 				},
-				"Displays.Display[0].Select": {
+				"System.Separate": {
+					"joinId": 3,
+					"smartObjectId": 1
+				},
+				"System.Combine": {
+					"joinId": 4,
+					"smartObjectId": 1
+				},
+				"Audio.Source_Mute": {
+					"joinId": 1,
+					"smartObjectId": 29
+				},
+				"Audio.Mic_Mute": {
+					"joinId": 2,
+					"smartObjectId": 29
+				},
+				"System.aPreset[0].Press": {
+					"joinId": 1,
+					"smartObjectId": 2
+				},
+				"System.aPreset[0].Hold": {
+					"joinId": 2,
+					"smartObjectId": 2
+				},
+				"System.aPreset[1].Press": {
 					"joinId": 1,
 					"smartObjectId": 3
+				},
+				"System.aPreset[1].Hold": {
+					"joinId": 2,
+					"smartObjectId": 3
+				},
+				"System.aPreset[2].Press": {
+					"joinId": 1,
+					"smartObjectId": 4
+				},
+				"System.aPreset[2].Hold": {
+					"joinId": 2,
+					"smartObjectId": 4
+				},
+				"System.aPreset[3].Press": {
+					"joinId": 1,
+					"smartObjectId": 5
+				},
+				"System.aPreset[3].Hold": {
+					"joinId": 2,
+					"smartObjectId": 5
+				},
+				"System.aPreset[4].Press": {
+					"joinId": 1,
+					"smartObjectId": 6
+				},
+				"System.aPreset[4].Hold": {
+					"joinId": 2,
+					"smartObjectId": 6
+				},
+				"Displays.Display[0].Select": {
+					"joinId": 1,
+					"smartObjectId": 8
 				},
 				"Displays.Display[0].Clear": {
 					"joinId": 2,
-					"smartObjectId": 3
+					"smartObjectId": 8
 				},
 				"Displays.Display[1].Select": {
 					"joinId": 1,
-					"smartObjectId": 4
+					"smartObjectId": 9
 				},
 				"Displays.Display[1].Clear": {
 					"joinId": 2,
-					"smartObjectId": 4
+					"smartObjectId": 9
 				},
 				"Displays.Display[2].Select": {
 					"joinId": 1,
-					"smartObjectId": 5
+					"smartObjectId": 10
 				},
 				"Displays.Display[2].Clear": {
 					"joinId": 2,
-					"smartObjectId": 5
+					"smartObjectId": 10
 				},
 				"Displays.Display[3].Select": {
 					"joinId": 1,
-					"smartObjectId": 6
+					"smartObjectId": 11
 				},
 				"Displays.Display[3].Clear": {
 					"joinId": 2,
-					"smartObjectId": 6
+					"smartObjectId": 11
 				},
 				"Displays.Display[4].Select": {
 					"joinId": 1,
-					"smartObjectId": 7
+					"smartObjectId": 12
 				},
 				"Displays.Display[4].Clear": {
 					"joinId": 2,
-					"smartObjectId": 7
+					"smartObjectId": 12
 				},
 				"Displays.Display[5].Select": {
 					"joinId": 1,
-					"smartObjectId": 8
+					"smartObjectId": 13
 				},
 				"Displays.Display[5].Clear": {
 					"joinId": 2,
-					"smartObjectId": 8
+					"smartObjectId": 13
 				},
 				"Displays.Display[6].Select": {
 					"joinId": 1,
-					"smartObjectId": 9
+					"smartObjectId": 14
 				},
 				"Displays.Display[6].Clear": {
 					"joinId": 2,
-					"smartObjectId": 9
+					"smartObjectId": 14
 				},
 				"Displays.Display[7].Select": {
 					"joinId": 1,
-					"smartObjectId": 10
+					"smartObjectId": 15
 				},
 				"Displays.Display[7].Clear": {
 					"joinId": 2,
-					"smartObjectId": 10
+					"smartObjectId": 15
 				},
 				"Displays.Display[8].Select": {
 					"joinId": 1,
-					"smartObjectId": 11
+					"smartObjectId": 16
 				},
 				"Displays.Display[8].Clear": {
 					"joinId": 2,
-					"smartObjectId": 11
+					"smartObjectId": 16
 				},
 				"Displays.Display[9].Select": {
 					"joinId": 1,
-					"smartObjectId": 12
+					"smartObjectId": 17
 				},
 				"Displays.Display[9].Clear": {
 					"joinId": 2,
-					"smartObjectId": 12
+					"smartObjectId": 17
 				}
 			},
 			"numeric": {
 				"Sources.Select": {
 					"joinId": 1,
-					"smartObjectId": 13
+					"smartObjectId": 18
+				},
+				"Audio.Source_Level": {
+					"joinId": 1,
+					"smartObjectId": 29
+				},
+				"Audio.Mic_Level": {
+					"joinId": 2,
+					"smartObjectId": 29
 				}
 			}
 		}
