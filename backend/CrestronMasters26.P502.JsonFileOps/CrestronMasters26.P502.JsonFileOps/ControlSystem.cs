@@ -31,8 +31,8 @@ namespace CrestronMasters26.P502.JsonFileOps
 
         private void StartupConfig(object? o)
         {
-            string slot = "program" + ProgramNumber.ToString("D2");
-            _configManager = new ConfigManager("roomConfig.json", slot);
+            string programSlotName = "program" + ProgramNumber.ToString("D2");
+            _configManager = new ConfigManager("roomConfig.json", programSlotName);
 
             _roomConfig = _configManager.Load();
 

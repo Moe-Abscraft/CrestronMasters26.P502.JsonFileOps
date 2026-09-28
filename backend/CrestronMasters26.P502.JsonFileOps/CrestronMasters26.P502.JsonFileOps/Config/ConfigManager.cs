@@ -6,7 +6,7 @@ namespace CrestronMasters26.P502.JsonFileOps
 {
     internal class ConfigManager
     {
-        private readonly object _lock = new object();
+        private readonly CCriticalSection _lock = new CCriticalSection();
         private readonly string _folder;
         private string _filePath;
         public string FilePath { get => _filePath; }
@@ -19,11 +19,7 @@ namespace CrestronMasters26.P502.JsonFileOps
         private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
         {
             WriteIndented = true,
-
-            // People edit this file by hand. Without these, one trailing comma or a
-            // // comment and the whole file is rejected.
-            AllowTrailingCommas = true,
-            ReadCommentHandling = JsonCommentHandling.Skip
+            AllowTrailingCommas = true
         };
         public ConfigManager(string fileName, string subFolder)
         {
@@ -55,7 +51,10 @@ namespace CrestronMasters26.P502.JsonFileOps
             // The UI shows this message. Empty means everything is fine.
             StatusMessage = string.Empty;
 
-            lock (_lock)
+            // Enter/Leave in a try/finally: Leave runs even if something throws,
+            // otherwise the lock stays taken and the next Load() waits forever.
+            _lock.Enter();
+            try
             {
                 // 1. Try to read the file.
                 try
@@ -102,6 +101,10 @@ namespace CrestronMasters26.P502.JsonFileOps
 
                 // 3. Remember the file time, or auto-update thinks the file changed.
                 _loadedWriteTime = File.GetLastWriteTimeUtc(_filePath);
+            }
+            finally
+            {
+                _lock.Leave();
             }
 
             config.LastReadTime = DateTime.Now;
