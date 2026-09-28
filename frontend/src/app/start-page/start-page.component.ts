@@ -1,13 +1,16 @@
 import { AfterViewInit, Component, NgZone, OnInit } from '@angular/core';
 import { ControllerService, Source, Display } from '../service/controller.service';
 import { CommonModule } from '@angular/common';
+import { AudioControlsComponent } from '../audio-controls/audio-controls.component';
+import { PresetsComponent } from '../presets/presets.component';
+import { ConfigStatusComponent } from '../config-status/config-status.component';
 
 @Component({
   standalone: true,
   selector: 'app-start-page',
   templateUrl: './start-page.component.html',
   styleUrl: './start-page.component.scss',
-  imports: [CommonModule]
+  imports: [CommonModule, AudioControlsComponent, PresetsComponent, ConfigStatusComponent]
 })
 export class StartPageComponent implements OnInit, AfterViewInit {
   page = 1;
@@ -20,6 +23,7 @@ export class StartPageComponent implements OnInit, AfterViewInit {
     laptop: 'assets/img/laptop-duotone-thin.svg',
     wireless: 'assets/img/airplay-duotone-thin.svg',
     pc: 'assets/img/computer-duotone-thin-full.svg',
+    cabletv: 'assets/img/tv-duotone-thin.svg'
   };
   readonly displayIcon = 'assets/img/tv-duotone-thin.svg';
 
@@ -75,6 +79,16 @@ export class StartPageComponent implements OnInit, AfterViewInit {
 
   sourceSet(source: Source) {
     this.cs.selectSource(this.indexOfSource(source));
+  }
+
+  displaySelect(display: Display) {
+    this.cs.selectDisplay(this.indexOfDisplay(display));
+  }
+
+  /** Inside the card, so it must not also count as a tap on the card. */
+  displayClear(display: Display, event: Event) {
+    event.stopPropagation();
+    this.cs.clearDisplay(this.indexOfDisplay(display));
   }
 
   trackByIndex(index: number): number {

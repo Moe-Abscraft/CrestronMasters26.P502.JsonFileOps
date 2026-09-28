@@ -1,0 +1,26 @@
+<div class="presets">
+    <button type="button" class="preset"
+            *ngFor="let index of presets; trackBy: trackByIndex"
+            [class.holding]="holding === index"
+            [class.saved]="saved === index"
+            (pointerdown)="onPress(index, $event)"
+            (pointerup)="onRelease(index)"
+            (pointerleave)="onCancel()"
+            (pointercancel)="onCancel()"
+            (contextmenu)="$event.preventDefault()">
+
+        <span class="hold-sweep"></span>
+
+        <span class="preset-face">
+            <i class="preset-icon ri-star-fill"></i>
+            <span class="preset-name">{{ label(index) }}</span>
+        </span>
+
+        <span class="preset-saved">
+            <i class="ri-check-line"></i>
+            Saved
+        </span>
+    </button>
+</div>
+
+<p class="preset-hint">Tap to recall &middot; hold {{ holdSeconds }} seconds to save</p>

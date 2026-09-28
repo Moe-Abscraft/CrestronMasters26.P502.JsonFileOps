@@ -5,15 +5,6 @@
     </div>
     <div class="header">
         <span>{{ mode }}</span>
-        <div class="config-status">
-            <button type="button" class="btn btn-outline-primary" (click)="reloadConfig()">
-                Reload Config
-            </button>
-            <span class="last-updated">
-                Last updated:
-                <span class="value">{{ lastUpdatedTime || '--' }}</span>
-            </span>
-        </div>
         <div class="room-layout" *ngIf="page === 1">
             <div class="row">
                 <div class="col">
@@ -23,7 +14,7 @@
                         </button>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                             <button ngbDropdownItem (click)="separate()">Rooms Separate</button>
-                            <button ngbDropdownItem></button>
+                            <div class="dropdown-divider"></div>
                             <button ngbDropdownItem (click)="combine()">Rooms Combine</button>
                         </div>
                     </div>

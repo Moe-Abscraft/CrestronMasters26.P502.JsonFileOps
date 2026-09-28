@@ -1,0 +1,136 @@
+$panel-border: rgba(255, 255, 255, .14);
+$panel-fill: rgba(255, 255, 255, .04);
+$accent: #4da3ff;
+$saved: #3ecf8e;
+
+.presets {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .75rem;
+}
+
+.preset {
+    position: relative;
+    width: 104px;
+    height: 38px;
+    padding: 0;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid $panel-border;
+    border-radius: 10px;
+    background-color: $panel-fill;
+    /* A long press must not select the label or pop the panel's magnifier. */
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: none;
+    transition: background-color .15s ease, border-color .15s ease, transform .1s ease;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, .09);
+        border-color: rgba(255, 255, 255, .28);
+    }
+
+    &:active {
+        transform: scale(.98);
+    }
+}
+
+/* The fill that sweeps left to right over the hold window. Width is animated
+   by the class alone -- no per-frame timer on the panel. */
+.hold-sweep {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    background-color: rgba(77, 163, 255, .22);
+    border-right: 2px solid rgba(77, 163, 255, .55);
+    pointer-events: none;
+}
+
+.preset.holding .hold-sweep {
+    width: 100%;
+    /* Matches HOLD_MS in presets.component.ts. */
+    transition: width 3s linear;
+}
+
+.preset-face {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .4rem;
+    transition: opacity .15s ease;
+
+    .preset-icon {
+        font-size: .8125rem;
+        line-height: 1;
+        color: rgba(255, 255, 255, .45);
+        transition: color .15s ease;
+    }
+
+    .preset-name {
+        color: #ffffff;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        line-height: 1.2;
+        max-width: 72px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.preset.holding .preset-face .preset-icon {
+    color: $accent;
+}
+
+.preset-saved {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .375rem;
+
+    color: $saved;
+    font-size: var(--js-font-size-jsm);
+    font-weight: 600;
+    letter-spacing: .02em;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s ease;
+
+    i {
+        font-size: 1.125rem;
+        line-height: 1;
+    }
+}
+
+.preset.saved {
+    border-color: rgba(62, 207, 142, .55);
+    background-color: rgba(62, 207, 142, .12);
+
+    .preset-face {
+        opacity: 0;
+    }
+
+    .preset-saved {
+        opacity: 1;
+    }
+}
+
+.preset-hint {
+    margin: .25rem 0 0;
+    text-align: center;
+    color: rgba(255, 255, 255, .4);
+    font-size: 0.6875rem;
+    letter-spacing: .04em;
+}

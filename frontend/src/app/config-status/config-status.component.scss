@@ -1,0 +1,42 @@
+.config-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+
+    /* Compact on purpose: these are occasional admin actions, not room controls. */
+    .btn {
+        height: 26px;
+        padding: 0 .625rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        line-height: 1;
+    }
+
+    /* Reload Config is momentary: filled only while the finger is down.
+       Bootstrap also fills an outline button on :hover and :focus, and a touch
+       panel leaves both on the last button tapped -- so neither may fill it. */
+    .btn-outline-primary {
+        --bs-btn-hover-bg: transparent;
+        --bs-btn-hover-color: var(--bs-btn-color);
+        --bs-btn-hover-border-color: var(--bs-btn-border-color);
+        --bs-btn-focus-box-shadow: none;
+    }
+
+    /* A real mouse still gets a hint on hover. */
+    @media (hover: hover) {
+        .btn-outline-primary:hover {
+            --bs-btn-hover-bg: rgba(13, 110, 253, .15);
+        }
+    }
+
+    .last-updated {
+        white-space: nowrap;
+        font-size: 0.75rem;
+        opacity: 0.6;
+
+        .value {
+            font-variant-numeric: tabular-nums;
+        }
+    }
+}

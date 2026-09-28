@@ -1,0 +1,57 @@
+<!-- Program audio -->
+<div class="channel" *ngIf="channel === 'program'" [class.muted]="sourceMuted">
+    <div class="channel-head">
+        <i class="channel-icon" [ngClass]="sourceMuted ? 'ri-volume-mute-fill' : 'ri-volume-up-fill'"></i>
+        <span class="channel-name">Program</span>
+    </div>
+
+    <span class="channel-value">{{ sourceMuted ? 'Muted' : sourceLevel + '%' }}</span>
+
+    <div class="fader">
+        <input type="range" class="level" min="0" max="100" step="1"
+               [value]="sourceLevel"
+               [style.--fill]="sourceLevel + '%'"
+               [disabled]="sourceMuted"
+               aria-label="Program level"
+               aria-orientation="vertical"
+               (input)="onSourceInput($any($event.target).value)"
+               (change)="onSourceRelease()"
+               (pointerup)="onSourceRelease()"
+               (pointercancel)="onSourceRelease()">
+    </div>
+
+    <button type="button" class="mute" [class.on]="sourceMuted"
+            [attr.aria-pressed]="sourceMuted" (click)="toggleSourceMute()">
+        <i [ngClass]="sourceMuted ? 'ri-volume-mute-fill' : 'ri-volume-up-fill'"></i>
+        <span>{{ sourceMuted ? 'Unmute' : 'Mute' }}</span>
+    </button>
+</div>
+
+<!-- Microphones -->
+<div class="channel" *ngIf="channel === 'mic'" [class.muted]="micMuted">
+    <div class="channel-head">
+        <i class="channel-icon" [ngClass]="micMuted ? 'ri-mic-off-fill' : 'ri-mic-fill'"></i>
+        <span class="channel-name">Mics</span>
+    </div>
+
+    <span class="channel-value">{{ micMuted ? 'Muted' : micLevel + '%' }}</span>
+
+    <div class="fader">
+        <input type="range" class="level" min="0" max="100" step="1"
+               [value]="micLevel"
+               [style.--fill]="micLevel + '%'"
+               [disabled]="micMuted"
+               aria-label="Microphone level"
+               aria-orientation="vertical"
+               (input)="onMicInput($any($event.target).value)"
+               (change)="onMicRelease()"
+               (pointerup)="onMicRelease()"
+               (pointercancel)="onMicRelease()">
+    </div>
+
+    <button type="button" class="mute" [class.on]="micMuted"
+            [attr.aria-pressed]="micMuted" (click)="toggleMicMute()">
+        <i [ngClass]="micMuted ? 'ri-mic-off-fill' : 'ri-mic-fill'"></i>
+        <span>{{ micMuted ? 'Unmute' : 'Mute' }}</span>
+    </button>
+</div>

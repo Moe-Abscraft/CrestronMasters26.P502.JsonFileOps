@@ -1,18 +1,21 @@
 <main class="js-main presentation">
-    <section class="header">
-        <label for="" class="label-connected">Please select a source from below.</label>
-    </section>
+    <div class="room-body">
 
-    <div class="container room-content">
+    <!-- Mic level: left edge -->
+    <aside class="audio-side">
+        <app-audio-controls channel="mic"></app-audio-controls>
+    </aside>
+
+    <div class="room-content">
 
         <!-- Sources -->
         <section class="group">
             <h2 class="group-title">Sources</h2>
 
             <div class="js-dashboard-content-container sources">
+                <!-- No selected-state feedback: a source button only shows the press itself -->
                 <button type="button" class="btn src" *ngFor="let source of visibleSources; trackBy: trackByIndex"
-                    [class.selected]="source.selected" (click)="sourceSet(source)"
-                    [attr.aria-pressed]="source.selected">
+                    (click)="sourceSet(source)">
                     <img [src]="iconFor(source)" [alt]="source.icon" class="icon-connected">
                     <span class="src-name">{{ source.name }}</span>
                 </button>
@@ -28,32 +31,56 @@
             <h2 class="group-title">Displays</h2>
 
             <div class="js-dashboard-content-container displays">
-                <div class="disp" *ngFor="let display of visibleDisplays; trackBy: trackByIndex">
-                    <img [src]="displayIcon" alt="display" class="icon-connected">
-
-                    <span class="disp-name">{{ display.name }}</span>
-                    <span class="disp-model" *ngIf="display.model.length > 0">{{ display.model }}</span>
+                <!-- Tap a display to route the selected source to it -->
+                <div class="disp" role="button" tabindex="0"
+                     *ngFor="let display of visibleDisplays; trackBy: trackByIndex"
+                     (click)="displaySelect(display)">
+                    <div class="disp-head">
+                        <img [src]="displayIcon" alt="display" class="icon-connected">
+                        <div class="disp-title">
+                            <span class="disp-name">{{ display.name }}</span>
+                            <span class="disp-model" *ngIf="display.model.length > 0">{{ display.model }}</span>
+                        </div>
+                    </div>
 
                     <div class="disp-routed" [class.idle]="display.routedSource.length === 0">
-                        <span class="disp-routed-label">Routed source</span>
-                        <span class="disp-routed-value">{{ display.routedSource || 'None' }}</span>
+                        {{ display.routedSource || 'Nothing routed' }}
                     </div>
+
+                    <!-- Only there when something is routed; sends Displays.Display[i].Clear -->
+                    <button type="button" class="disp-clear" aria-label="Clear display"
+                            *ngIf="display.routedSource.length > 0"
+                            (click)="displayClear(display, $event)">
+                        <i class="ri-close-line"></i>
+                    </button>
                 </div>
             </div>
         </section>
     </div>
 
+    <!-- Program level: right edge -->
+    <aside class="audio-side">
+        <app-audio-controls channel="program"></app-audio-controls>
+    </aside>
+
+    </div>
+
+    <!-- Presets: pinned to the bottom, just above the footer -->
+    <section class="presets-bar">
+        <app-presets></app-presets>
+    </section>
+
     <div class="container-fluid footer-container">
-        <div class="js-dashboard-content-footer h-100">
-            <div class="js-dashboard-content-footer-start">
-                <div class="js-dashboard-footer-text end-align">
-                    <span>Crestron Masters 2026 | P501</span>
-                </div>
+        <div class="footer-row">
+            <div class="js-dashboard-footer-text">
+                <span>Crestron Masters 2026 | P501</span>
             </div>
-            <div class="js-dashboard-content-footer-end">
-                <div class="js-dashboard-footer-brand item-end end-align">
-                    <span>Crestron Electronics</span>
-                </div>
+
+            <!-- Reload Config / Auto Update / Last updated -->
+            <app-config-status></app-config-status>
+
+            <div class="js-dashboard-footer-brand footer-brand">
+                <span>Crestron Electronics</span>
             </div>
         </div>
     </div>

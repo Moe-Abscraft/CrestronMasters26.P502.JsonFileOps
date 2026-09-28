@@ -1,0 +1,183 @@
+$panel-border: rgba(255, 255, 255, .14);
+$panel-fill: rgba(255, 255, 255, .04);
+$accent: #4da3ff;
+$mute: #e0575f;
+
+:host {
+    display: block;
+}
+
+/* Length of the vertical fader track. */
+$fader-length: 190px;
+$fader-thickness: 40px;
+
+.channel {
+    width: 104px;
+    padding: .75rem .625rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .625rem;
+
+    border: 1px solid $panel-border;
+    border-radius: 14px;
+    background-color: $panel-fill;
+    transition: border-color .15s ease;
+}
+
+.channel-head {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    .channel-icon {
+        font-size: 1.0625rem;
+        line-height: 1;
+        color: $accent;
+        transition: color .15s ease;
+    }
+
+    .channel-name {
+        color: #ffffff;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+}
+
+.channel-value {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .04em;
+    color: rgba(255, 255, 255, .6);
+}
+
+/* The range input is laid out horizontally and rotated a quarter turn, so the
+   minimum sits at the bottom. Rotation rather than `writing-mode: vertical-lr`
+   because older panel browsers ignore vertical writing-mode on range inputs.
+   The box reserves the rotated footprint; the input is centred inside it. */
+.fader {
+    position: relative;
+    width: $fader-thickness;
+    height: $fader-length;
+
+    .level {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $fader-length;
+        transform: translate(-50%, -50%) rotate(-90deg);
+    }
+}
+
+/* Track is painted with a gradient stop at --fill, set per-value from the template. */
+.level {
+    --fill: 0%;
+
+    height: $fader-thickness;
+    margin: 0;
+    padding: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    touch-action: none;
+
+    &::-webkit-slider-runnable-track {
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(
+            to right,
+            $accent 0%,
+            $accent var(--fill),
+            rgba(255, 255, 255, .12) var(--fill),
+            rgba(255, 255, 255, .12) 100%
+        );
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 26px;
+        height: 26px;
+        margin-top: -8px;
+        border: 2px solid rgba(255, 255, 255, .85);
+        border-radius: 50%;
+        background-color: $accent;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .45);
+    }
+
+    &::-moz-range-track {
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .12);
+    }
+
+    &::-moz-range-progress {
+        height: 10px;
+        border-radius: 999px;
+        background-color: $accent;
+    }
+
+    &::-moz-range-thumb {
+        width: 22px;
+        height: 22px;
+        border: 2px solid rgba(255, 255, 255, .85);
+        border-radius: 50%;
+        background-color: $accent;
+    }
+
+    &:disabled {
+        opacity: .4;
+    }
+}
+
+.mute {
+    width: 100%;
+    padding: .3125rem .5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .375rem;
+
+    border: 1px solid $panel-border;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, .04);
+    color: rgba(255, 255, 255, .8);
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease, transform .1s ease;
+
+    i {
+        font-size: 1.0625rem;
+        line-height: 1;
+    }
+
+    &:hover {
+        background-color: rgba(255, 255, 255, .09);
+        border-color: rgba(255, 255, 255, .28);
+    }
+
+    &:active {
+        transform: scale(.97);
+    }
+
+    &.on {
+        background-color: rgba(224, 87, 95, .18);
+        border-color: $mute;
+        color: #ffffff;
+    }
+}
+
+.channel.muted {
+    border-color: rgba(224, 87, 95, .45);
+
+    .channel-head .channel-icon {
+        color: $mute;
+    }
+
+    .channel-head .channel-value {
+        color: rgba(224, 87, 95, .95);
+    }
+}

@@ -11,7 +11,6 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   connected = false;
   page = 1;
   mode = "";
-  lastUpdatedTime = '';
 
   constructor(private cs: ControllerService, private zone: NgZone, private router: Router) {
 
@@ -21,7 +20,6 @@ export class HeaderComponent implements OnInit, AfterViewInit{
     this.zone.run(() => {
       this.connected = this.cs.connected;
       this.page = this.cs.page;
-      this.lastUpdatedTime = this.cs.lastUpdatedTime;
 
       this.setRoute(this.page);
     });
@@ -29,8 +27,6 @@ export class HeaderComponent implements OnInit, AfterViewInit{
 
   ngAfterViewInit(): void {
     this.cs.connectedChanged.subscribe(value => this.zone.run(() => this.connected = value));
-    this.cs.lastUpdatedTimeChanged.subscribe(value =>
-      this.zone.run(() => this.lastUpdatedTime = value));
     this.cs.pageChanged.subscribe(value => this.zone.run(()=> {
       this.page = value;
       if(this.page === 1) this.mode = "Config Reader";
@@ -63,18 +59,14 @@ export class HeaderComponent implements OnInit, AfterViewInit{
     }
   }
 
-  /** Pulse the ReloadConfig contract event; the time field updates when the
-   *  control system pushes a new LastUpdatedTime back. */
-  reloadConfig() {
-    this.cs.reloadConfig();
-  }
-
+  /** Room Layout -> Rooms Separate: pulses System.Separate. */
   separate() {
-    this.cs.pulseDigital('1');
+    this.cs.separateRooms();
   }
 
+  /** Room Layout -> Rooms Combine: pulses System.Combine. */
   combine() {
-    this.cs.pulseDigital('2');
+    this.cs.combineRooms();
   }
 
 }

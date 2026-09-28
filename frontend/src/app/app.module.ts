@@ -9,6 +9,7 @@ import { StartPageComponent } from './start-page/start-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
+import { MessageBoxComponent } from './message-box/message-box.component';
 import { ControllerService } from './service/controller.service';
 import { FormsModule } from '@angular/forms';
 
@@ -44,6 +45,7 @@ console.log(`Crestron WebXPanel build date: ${getBuildDate()}`);
     BrowserAnimationsModule,
     NgbModule,
     StartPageComponent,
+    MessageBoxComponent,
     FormsModule,
     HttpClientModule
   ],
@@ -100,7 +102,7 @@ export class AppModule {
       WebXPanelConfigParams.ipId = (entries['ipid'] ?? '').toLowerCase();
       WebXPanelConfigParams.roomId = entries['roomid'] ?? '';
       WebXPanelConfigParams.tokenSource = entries['tokensource'];
-      WebXPanelConfigParams.tokenUrl = entries['tokenurl'] ?? '';
+      WebXPanelConfigParams.tokenUrl = entries['tokenurl'];
       WebXPanelConfigParams.authToken = entries['authtoken'] ?? 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImVlNDBlMzY0LTVkNGUtNDRkOC1hMDczLTlkZGE0Yzc0ZjM5MSIsImx2IjoiRGVmYXVsdCBMZXZlbCIsInZlciI6IjEuMCIsImV4cGkiOiIwIn0.8UoiTQjskcWZV0PmByEZ2TTrvY0FWJqg8FbkNvaxrls';
        
       console.log(

@@ -1,0 +1,17 @@
+<div class="config-status">
+    <button type="button" class="btn btn-outline-primary"
+            (click)="reloadConfig()" (pointerup)="release($event)">
+        Reload Config
+    </button>
+    <button type="button" class="btn"
+            [class.btn-primary]="autoUpdate"
+            [class.btn-outline-primary]="!autoUpdate"
+            [attr.aria-pressed]="autoUpdate"
+            (click)="toggleAutoUpdate()" (pointerup)="release($event)">
+        Auto Update
+    </button>
+    <span class="last-updated">
+        Last updated:
+        <span class="value">{{ lastUpdatedTime || '--' }}</span>
+    </span>
+</div>

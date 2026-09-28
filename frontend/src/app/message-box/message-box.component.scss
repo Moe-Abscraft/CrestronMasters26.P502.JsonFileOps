@@ -1,0 +1,95 @@
+$warn: #f0b429;
+
+:host {
+    position: fixed;
+    top: calc(var(--js-header-height) + .5rem);
+    left: 0;
+    right: 0;
+    z-index: 1080;
+
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.message-box {
+    max-width: min(720px, calc(100vw - 4rem));
+    padding: .875rem 1rem .875rem 1.125rem;
+
+    display: flex;
+    align-items: flex-start;
+    gap: .875rem;
+
+    border: 1px solid rgba(240, 180, 41, .55);
+    border-left: 4px solid $warn;
+    border-radius: 14px;
+    background-color: #1b2135;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, .45);
+    pointer-events: auto;
+
+    animation: message-in .18s ease-out;
+}
+
+.message-icon {
+    flex: 0 0 auto;
+    margin-top: .0625rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    color: $warn;
+}
+
+.message-body {
+    display: flex;
+    flex-direction: column;
+    gap: .125rem;
+    min-width: 0;
+}
+
+.message-title {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: $warn;
+}
+
+.message-text {
+    color: rgba(255, 255, 255, .92);
+    font-size: var(--js-font-size-jsm);
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.message-dismiss {
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 8px;
+    background-color: transparent;
+    color: rgba(255, 255, 255, .55);
+    font-size: 1.125rem;
+    transition: background-color .15s ease, color .15s ease;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, .09);
+        color: #ffffff;
+    }
+}
+
+@keyframes message-in {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

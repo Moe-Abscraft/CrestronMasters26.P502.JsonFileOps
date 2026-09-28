@@ -1,0 +1,11 @@
+Source Name,Icon,Value
+Input 1,Laptop,1
+Input 2,Laptop,2
+Cable TV 1,TV,3
+Cable TV 2,TV,4
+Apple TV,Airplay,5
+Input 3,Laptop,6
+,Laptop,0
+,TV,0
+,TV,0
+,Airplay,0
