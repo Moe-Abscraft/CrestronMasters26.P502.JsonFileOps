@@ -1,7 +1,7 @@
 <!-- Program audio -->
 <div class="channel" *ngIf="channel === 'program'" [class.muted]="sourceMuted">
     <div class="channel-head">
-        <i class="channel-icon" [ngClass]="sourceMuted ? 'ri-volume-mute-fill' : 'ri-volume-up-fill'"></i>
+        <fa-icon class="channel-icon" [icon]="sourceMuted ? icons.volumeMuted : icons.volume"></fa-icon>
         <span class="channel-name">Program</span>
     </div>
 
@@ -22,7 +22,7 @@
 
     <button type="button" class="mute" [class.on]="sourceMuted"
             [attr.aria-pressed]="sourceMuted" (click)="toggleSourceMute()">
-        <i [ngClass]="sourceMuted ? 'ri-volume-mute-fill' : 'ri-volume-up-fill'"></i>
+        <fa-icon [icon]="sourceMuted ? icons.volumeMuted : icons.volume"></fa-icon>
         <span>{{ sourceMuted ? 'Unmute' : 'Mute' }}</span>
     </button>
 </div>
@@ -30,7 +30,7 @@
 <!-- Microphones -->
 <div class="channel" *ngIf="channel === 'mic'" [class.muted]="micMuted">
     <div class="channel-head">
-        <i class="channel-icon" [ngClass]="micMuted ? 'ri-mic-off-fill' : 'ri-mic-fill'"></i>
+        <fa-icon class="channel-icon" [icon]="micMuted ? icons.micMuted : icons.mic"></fa-icon>
         <span class="channel-name">Mics</span>
     </div>
 
@@ -51,7 +51,7 @@
 
     <button type="button" class="mute" [class.on]="micMuted"
             [attr.aria-pressed]="micMuted" (click)="toggleMicMute()">
-        <i [ngClass]="micMuted ? 'ri-mic-off-fill' : 'ri-mic-fill'"></i>
+        <fa-icon [icon]="micMuted ? icons.micMuted : icons.mic"></fa-icon>
         <span>{{ micMuted ? 'Unmute' : 'Mute' }}</span>
     </button>
 </div>

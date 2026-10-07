@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, NgZone, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Icons } from '../helpers/icons';
 import { ControllerService } from '../service/controller.service';
 
 /**
@@ -12,9 +14,11 @@ import { ControllerService } from '../service/controller.service';
   selector: 'app-message-box',
   templateUrl: './message-box.component.html',
   styleUrl: './message-box.component.scss',
-  imports: [CommonModule]
+  imports: [CommonModule, FontAwesomeModule]
 })
 export class MessageBoxComponent implements OnInit, AfterViewInit {
+  readonly icons = Icons;
+
   message = '';
   private dismissed = '';
 

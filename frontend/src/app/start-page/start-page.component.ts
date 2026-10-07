@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, NgZone, OnInit } from '@angular/core';
 import { ControllerService, Source, Display } from '../service/controller.service';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Icons } from '../helpers/icons';
 import { AudioControlsComponent } from '../audio-controls/audio-controls.component';
 import { PresetsComponent } from '../presets/presets.component';
 import { ConfigStatusComponent } from '../config-status/config-status.component';
@@ -10,9 +12,11 @@ import { ConfigStatusComponent } from '../config-status/config-status.component'
   selector: 'app-start-page',
   templateUrl: './start-page.component.html',
   styleUrl: './start-page.component.scss',
-  imports: [CommonModule, AudioControlsComponent, PresetsComponent, ConfigStatusComponent]
+  imports: [CommonModule, FontAwesomeModule, AudioControlsComponent, PresetsComponent, ConfigStatusComponent]
 })
 export class StartPageComponent implements OnInit, AfterViewInit {
+  readonly icons = Icons;
+
   page = 1;
   sources: Source[] = [];
   displays: Display[] = [];

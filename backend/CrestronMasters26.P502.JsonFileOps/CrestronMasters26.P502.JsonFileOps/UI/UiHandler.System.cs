@@ -6,52 +6,47 @@ namespace CrestronMasters26.P502.JsonFileOps
     {
         private void InitializeSystemContract()
         {
-            // OnPress acts on the press only. Reacting to both edges would run every
-            // reload a second time on the way back up.
-            _contract.System.ReloadConfig += OnPress("System.ReloadConfig", ReloadConfig);
-            _contract.System.AutoUpdate += OnPress("System.AutoUpdate", ToggleAutoUpdate);
+            // Act on press only, so it doesn't run twice.
+            // Load raises ConfigChanged, which updates the panel.
+            _contract.System.ReloadConfig += OnPress("System.ReloadConfig", () => _configManager.Load());
 
-            // Same room, two layouts: each button loads its own file. Load fires
-            // ConfigChanged, so the panel updates the same way as a reload.
+            // Two room layouts, each with its own file.
             _contract.System.Separate += OnPress("System.Separate", () => _configManager.Load("roomConfig_Separate.json"));
             _contract.System.Combine += OnPress("System.Combine", () => _configManager.Load("roomConfig_Combine.json"));
+
+            // Turn file watching on or off.
+            _contract.System.AutoUpdate += OnPress("System.AutoUpdate", () =>
+            {
+                _autoUpdateEnabled = !_autoUpdateEnabled;
+                _configManager.EnableAutoUpdate(_autoUpdateEnabled);
+                UpdateSystemStateFeedback();
+            });
         }
 
-        // ---------------------------------------------------------------- what it does
+        // ---------------------------------------------------------------- config feedback
 
-        private void ReloadConfig()
+        // Room name, last read time and status message.
+        private void UpdateSystemConfigFeedback()
         {
-            // Load fires ConfigChanged, which lands back here in UpdateFeedback. Nothing
-            // else to do - don't push feedback from here or the panel updates twice.
-            _configManager.Load();
-        }
+            string roomName = _roomConfig.RoomName ?? string.Empty;
+            _contract.System.RoomName((sig, _) => sig.StringValue = roomName);
 
-        private void ToggleAutoUpdate()
-        {
-            // The toggle itself is panel state, so it lives here. Watching the file is
-            // the config manager's job.
-            _autoUpdateEnabled = !_autoUpdateEnabled;
-            _configManager.EnableAutoUpdate(_autoUpdateEnabled);
+            string lastRead = _roomConfig.LastReadTime.ToString("yyyy-MM-dd HH:mm:ss");
+            _contract.System.LastUpdatedTime((sig, _) => sig.StringValue = lastRead);
 
-            UpdateSystemFeedback();
-        }
-
-        // ---------------------------------------------------------------- feedback
-
-        private void UpdateSystemFeedback()
-        {
-            string lastRead = _roomConfig?.LastReadTime.ToString("yyyy-MM-dd HH:mm:ss") ?? string.Empty;
-            _contract.System.LastUpdatedTime((sig, d) => sig.StringValue = lastRead);
-
-            _contract.System.AutoUpdate_Fb((sig, d) => sig.BoolValue = _autoUpdateEnabled);
-
-            // Push the status even when it's empty - that's what clears the banner on the
-            // panel after a good reload. A feedback you only send on failure never clears.
+            // Always send the status. Empty clears the message on the panel.
             string status = _configManager.StatusMessage;
-            _contract.System.Message((sig, d) => sig.StringValue = status);
+            _contract.System.Message((sig, _) => sig.StringValue = status);
 
             if (status.Length > 0)
                 ErrorLog.Warn("[JsonFileOps] {0}", status);
+        }
+
+        // ---------------------------------------------------------------- state feedback
+
+        private void UpdateSystemStateFeedback()
+        {
+            _contract.System.AutoUpdate_Fb((sig, _) => sig.BoolValue = _autoUpdateEnabled);
         }
     }
 }

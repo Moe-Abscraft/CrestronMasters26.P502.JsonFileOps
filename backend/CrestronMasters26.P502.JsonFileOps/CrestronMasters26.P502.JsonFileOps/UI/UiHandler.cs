@@ -4,15 +4,21 @@ using Crestron.SimplSharpPro.DeviceSupport;
 
 namespace CrestronMasters26.P502.JsonFileOps
 {
+    // All panel code. One file per contract component: Sources, Displays, Audio, Presets, System.
+    // Each file has:
+    //   Initialize...Contract   - what each button does
+    //   Update...ConfigFeedback - panel updates from the config file (names, status)
+    //   Update...StateFeedback  - panel updates from buttons and the emulator (routes, audio)
+    // The config is read-only here. Runtime state (routes, levels) lives in the emulator.
     internal sealed partial class UiHandler : IDisposable
     {
         private readonly object _lock = new object();
         private readonly List<BasicTriListWithSmartObject> _uiList = new List<BasicTriListWithSmartObject>();
         private readonly Contract _contract;
-        private RoomConfig? _roomConfig;
         private readonly ConfigManager _configManager;
         private readonly DeviceEmulator _emulator;
         private readonly PresetStore _presetStore;
+        private RoomConfig _roomConfig;
         private bool _autoUpdateEnabled;
         private bool _disposed;
 
@@ -22,44 +28,70 @@ namespace CrestronMasters26.P502.JsonFileOps
             _emulator = emulator;
             _contract = new Contract();
 
-            // Same folder as roomConfig.json.
+            // Never null: ConfigManager always has a config (defaults if the file is bad).
+            _roomConfig = configManager.RoomConfig;
+
+            // preset.json sits next to roomConfig.json.
             _presetStore = new PresetStore(Path.Combine(Path.GetDirectoryName(configManager.FilePath)!, "preset.json"));
 
-            // Contract events belong to the Contract, not to any one panel, so they are
-            // subscribed once here. Left in AddUi they get re-subscribed per panel, and
-            // two panels means every press handled twice.
+            // Hook up the buttons once, here (not in AddUi).
             InitializeSourcesContract();
             InitializeDisplaysContract();
             InitializeAudioContract();
             InitializeSystemContract();
             InitializePresetsContract();
 
-            // The two things that can change underneath the panel: the file on disk, and
-            // the hardware. Both report back the same way, and both land in feedback.
-            // Named methods, not lambdas: Dispose has to unsubscribe them, and a lambda
-            // can't be unsubscribed because there's no way to name it again.
+            // Update the panel when the file or the device changes.
+            // Named methods so Dispose can unsubscribe them.
             _configManager.ConfigChanged += ConfigManager_ConfigChanged;
             _emulator.RoutingChanged += Emulator_RoutingChanged;
             _emulator.AudioChanged += Emulator_AudioChanged;
         }
 
-        // The file watcher and the hardware call in on their own threads, so they go
-        // through Run and take the same lock as a button press.
+        // ---------------------------------------------------------------- events
+
+        // These run on other threads, so they go through Run (uses the lock).
+
+        // The config file was (re)loaded.
         private void ConfigManager_ConfigChanged(object? sender, RoomConfig config)
         {
-            UpdateFeedback(config);
+            Run("ConfigManager.ConfigChanged", () =>
+            {
+                _roomConfig = config;
+
+                // New config = start clean: no source selected, all displays cleared.
+                _emulator.SelectSource(0);
+                foreach (DisplayInfo d in config.Displays)
+                    _emulator.Route(d.Id, 0);
+
+                UpdateSourcesConfigFeedback();
+                UpdateDisplaysConfigFeedback();
+                UpdateSystemConfigFeedback();
+
+                // Sent here too: nothing is raised if routes were already cleared.
+                UpdateSourcesStateFeedback();
+                UpdateDisplaysStateFeedback();
+            });
         }
 
+        // Device events only update the panel. They never change the config.
         private void Emulator_RoutingChanged(object? sender, EventArgs args)
         {
-            Run("Emulator.RoutingChanged", UpdateRoutingFeedback);
+            Run("Emulator.RoutingChanged", () =>
+            {
+                UpdateSourcesStateFeedback();
+                UpdateDisplaysStateFeedback();
+            });
         }
 
         private void Emulator_AudioChanged(object? sender, EventArgs args)
         {
-            Run("Emulator.AudioChanged", UpdateAudioFeedback);
+            Run("Emulator.AudioChanged", UpdateAudioStateFeedback);
         }
 
+        // ---------------------------------------------------------------- panels
+
+        // Add a panel so it gets feedback.
         public void AddUi(BasicTriListWithSmartObject ui)
         {
             if (!_uiList.Contains(ui))
@@ -69,49 +101,32 @@ namespace CrestronMasters26.P502.JsonFileOps
             }
         }
 
-        /// <summary>Push everything: startup, a reload, or a panel coming online.</summary>
-        public void UpdateFeedback(RoomConfig? roomConfig)
+        /// <summary>Send everything to the panel. Use at startup and when a panel comes online.</summary>
+        public void UpdateAllFeedback()
         {
-            ErrorLog.Notice("[JsonFileOps] UpdateFeedback: {0} source(s), {1} display(s), {2} panel(s)",
-                roomConfig?.Sources.Count, roomConfig?.Displays.Count, _uiList.Count);
-
-            if (roomConfig == null)
+            Run(nameof(UpdateAllFeedback), () =>
             {
-                return;
-            }
+                UpdateSourcesConfigFeedback();
+                UpdateDisplaysConfigFeedback();
+                UpdateSystemConfigFeedback();
 
-            // Called from startup, from a reload on the timer thread and from a panel coming
-            // online - possibly all at once. Run makes them take turns with the presses.
-            Run(nameof(UpdateFeedback), () =>
-            {
-                _roomConfig = roomConfig;
-
-                // The reloaded file may be shorter than the one the selection was made against.
-                _emulator.ClampSelectedSource(roomConfig.Sources.Count);
-
-                RestoreRoutedSourceFromSelection();
-
-                UpdateSourceFeedback();
-                UpdateSelectedSourceFeedback();
-                UpdateDisplaysFeedback();
-                UpdateAudioFeedback();
-                UpdateSystemFeedback();
+                UpdateSourcesStateFeedback();
+                UpdateDisplaysStateFeedback();
+                UpdateAudioStateFeedback();
+                UpdateSystemStateFeedback();
             });
         }
 
         // ---------------------------------------------------------------- join helpers
 
-        // Each helper turns "what the button does" into the EventHandler the contract wants,
-        // so every Initialize...Contract reads as one line per join:
-        //     OnPress  - digital, runs once on the press (true) and ignores the release
-        //     OnHold   - digital, runs on both edges and hands over the state
-        //     OnAnalog - analog, runs with the value the slider landed on
-        //     OnSerial - serial, runs with the text
-        // They all end in Run, so one lock and one try/catch cover every join.
+        // Helpers to hook up a join in one line:
+        //   OnPress  - digital, runs on press only
+        //   OnHold   - digital, runs on press and release
+        //   OnAnalog - analog, gives the value
 
         private EventHandler<UIEventArgs> OnPress(string buttonName, Action action)
         {
-            return (sernder, args) =>
+            return (sender, args) =>
             {
                 if (args.SigArgs.Sig.BoolValue)
                     Run(buttonName, action);
@@ -120,7 +135,7 @@ namespace CrestronMasters26.P502.JsonFileOps
 
         private EventHandler<UIEventArgs> OnHold(string buttonName, Action<bool> action)
         {
-            return (sernder, args) =>
+            return (sender, args) =>
             {
                 var held = args.SigArgs.Sig.BoolValue;
                 Run(buttonName, () => action(held));
@@ -129,29 +144,21 @@ namespace CrestronMasters26.P502.JsonFileOps
 
         private EventHandler<UIEventArgs> OnAnalog(string buttonName, Action<ushort> action)
         {
-            return (sernder, args) =>
+            return (sender, args) =>
             {
                 var value = args.SigArgs.Sig.UShortValue;
                 Run(buttonName, () => action(value));
             };
         }
 
-        private EventHandler<UIEventArgs> OnSerial(string buttonName, Action<string> action)
-        {
-            return (sernder, args) =>
-            {
-                var value = args.SigArgs.Sig.StringValue;
-                Run(buttonName, () => action(value));
-            };
-        }
-
+        // Run an action with the lock and a try/catch.
         private void Run(string buttonName, Action action)
         {
             try
             {
-                lock(_lock)
+                lock (_lock)
                 {
-                    // A press can already be queued on a pool thread when the program stops.
+                    // Program is stopping: do nothing.
                     if (_disposed)
                         return;
 
@@ -166,11 +173,7 @@ namespace CrestronMasters26.P502.JsonFileOps
 
         // ---------------------------------------------------------------- dispose
 
-        /// <summary>
-        /// Undo everything the constructor and AddUi did. The config manager and the
-        /// emulator outlive this object and their events hold a reference back to it:
-        /// without the -= a disposed UiHandler keeps getting events and pushing to panels.
-        /// </summary>
+        /// <summary>Clean up: unsubscribe events and remove panels.</summary>
         public void Dispose()
         {
             lock (_lock)
@@ -190,7 +193,7 @@ namespace CrestronMasters26.P502.JsonFileOps
 
             _uiList.Clear();
 
-            // Drops every handler the Initialize...Contract methods attached.
+            // Removes all button handlers.
             _contract.Dispose();
         }
     }

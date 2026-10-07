@@ -2,12 +2,11 @@ using System.Text.Json;
 
 namespace CrestronMasters26.P502.JsonFileOps
 {
-    // No [JsonPropertyName] here: the CamelCase policy below turns SourceLevel into
-    // "sourceLevel" for every property at once.
+    // One saved preset: routes and audio.
+    // No [JsonPropertyName] needed: CamelCase policy below names them all.
     public class Preset
     {
-        // Key = display id, value = source id (0 = cleared). Ids, not names, so renaming
-        // a source or display in roomConfig.json doesn't break a saved preset.
+        // Display id -> source id (0 = cleared).
         public Dictionary<int, int> Routes { get; set; } = new Dictionary<int, int>();
         public ushort SourceLevel { get; set; }
         public bool SourceMuted { get; set; }
@@ -15,9 +14,8 @@ namespace CrestronMasters26.P502.JsonFileOps
         public bool MicMuted { get; set; }
     }
 
-    // preset.json is written by the program, never by hand, so it lives apart from
-    // roomConfig.json. It doesn't exist until the first preset is saved.
-    // Key = preset button number (1-5).
+    // Reads and writes preset.json. Key = preset button (1-5).
+    // The file is created on the first save.
     internal class PresetStore
     {
         private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions

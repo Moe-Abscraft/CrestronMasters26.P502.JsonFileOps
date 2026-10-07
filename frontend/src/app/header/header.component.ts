@@ -11,6 +11,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   connected = false;
   page = 1;
   mode = "";
+  roomName = "";
 
   constructor(private cs: ControllerService, private zone: NgZone, private router: Router) {
 
@@ -20,6 +21,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
     this.zone.run(() => {
       this.connected = this.cs.connected;
       this.page = this.cs.page;
+      this.roomName = this.cs.roomName;
 
       this.setRoute(this.page);
     });
@@ -27,6 +29,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
 
   ngAfterViewInit(): void {
     this.cs.connectedChanged.subscribe(value => this.zone.run(() => this.connected = value));
+    this.cs.roomNameChanged.subscribe(value => this.zone.run(() => this.roomName = value));
     this.cs.pageChanged.subscribe(value => this.zone.run(()=> {
       this.page = value;
       if(this.page === 1) this.mode = "Config Reader";

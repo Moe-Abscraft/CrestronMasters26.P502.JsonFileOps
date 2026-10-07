@@ -11,7 +11,7 @@ Schema=1
 ProjectFile=AppContract
 ContractID=_9o7ogahm1
 CEProjectVer=1.0.0.0
-DateTimeUTC=2026-09-27 16:31:35.434
+DateTimeUTC=2026-10-04 13:59:16.310
 ]
 [
 ObjTp=Symbol
@@ -29,10 +29,10 @@ MinVariableInputsList2=0
 MaxVariableInputsList2=0
 MinVariableOutputsList2=0
 MaxVariableOutputsList2=0
-MinVariableInputsList3=2
-MaxVariableInputsList3=2
-MinVariableOutputsList3=2
-MaxVariableOutputsList3=2
+MinVariableInputsList3=3
+MaxVariableInputsList3=3
+MinVariableOutputsList3=3
+MaxVariableOutputsList3=3
 NumFixedParams=1
 ParamCue1=ControlJoinId
 ParamSigType1=UI_RO_String
@@ -59,6 +59,9 @@ SmplCInputList3Cue1=_si4u3tlae
 InputList3Cue2=Message
 InputList3SigType2=Serial
 SmplCInputList3Cue2=_zqab3d530
+InputList3Cue3=RoomName
+InputList3SigType3=Serial
+SmplCInputList3Cue3=_rn3cm8x1v
 OutputCue1=ReloadConfig
 OutputSigType1=Digital
 SmplCOutputCue1=_7ohnj0fy0
@@ -77,6 +80,9 @@ SmplCOutputList3Cue1=_6fvupsox8
 OutputList3Cue2=[~UNUSED3~]
 OutputList3SigType2=Serial
 SmplCOutputList3Cue2=_chyz28zt8
+OutputList3Cue3=[~UNUSED3~]
+OutputList3SigType3=Serial
+SmplCOutputList3Cue3=_rn7fb2k4q
 ]
 [
 ObjTp=Dp

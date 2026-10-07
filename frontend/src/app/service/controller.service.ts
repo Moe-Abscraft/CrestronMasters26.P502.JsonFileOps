@@ -52,6 +52,7 @@ export const Contract = {
   LastUpdatedTime: 'System.LastUpdatedTime',
   AutoUpdateFb: 'System.AutoUpdate_Fb',
   Message: 'System.Message',
+  RoomName: 'System.RoomName',
   SourceName: (i: number) => `Sources.Source[${i}].Name`,
   SourcesSelected: 'Sources.Selected',
   DisplayName: (i: number) => `Displays.Display[${i}].Name`,
@@ -132,6 +133,10 @@ export class ControllerService {
   message = '';
   messageChanged: Subject<string> = new Subject<string>();
 
+  /** roomName from the loaded room config. */
+  roomName = '';
+  roomNameChanged: Subject<string> = new Subject<string>();
+
   audio: AudioState = { sourceLevel: 0, sourceMuted: false, micLevel: 0, micMuted: false };
   audioChanged: Subject<AudioState> = new Subject<AudioState>();
 
@@ -172,6 +177,11 @@ export class ControllerService {
     CrComLib.subscribeState('s', Contract.Message, (value: string) => {
       this.message = value ?? '';
       this.messageChanged.next(this.message);
+    });
+
+    CrComLib.subscribeState('s', Contract.RoomName, (value: string) => {
+      this.roomName = value ?? '';
+      this.roomNameChanged.next(this.roomName);
     });
 
     CrComLib.subscribeState('n', Contract.SourcesSelected, (value: number) => {

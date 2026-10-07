@@ -1,7 +1,6 @@
-<section style="width: 100vw; height: 100vh; ">
+<!-- Plain CSS background rather than <ch5-background>, which needs the 2 MB CH5 theme. -->
+<section style="width: 100vw; height: 100vh; background-color: #08142F;">
     <div class="js-dropdown-overlay" [class.show]="isShowAudioIncomingCall || isShowVideoIncomingCall"></div>
-    <ch5-background backgroundcolor="#08142F">
-    </ch5-background>
     <app-header></app-header>
     <app-message-box></app-message-box>
     <router-outlet></router-outlet>

@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, Input, NgZone, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Icons } from '../helpers/icons';
 import { AudioState, ControllerService } from '../service/controller.service';
 
 /**
@@ -16,9 +18,11 @@ import { AudioState, ControllerService } from '../service/controller.service';
   selector: 'app-audio-controls',
   templateUrl: './audio-controls.component.html',
   styleUrl: './audio-controls.component.scss',
-  imports: [CommonModule]
+  imports: [CommonModule, FontAwesomeModule]
 })
 export class AudioControlsComponent implements OnInit, AfterViewInit {
+  readonly icons = Icons;
+
   @Input() channel: 'program' | 'mic' = 'program';
 
   sourceLevel = 0;

@@ -1,13 +1,13 @@
 namespace CrestronMasters26.P502.JsonFileOps
 {
-    // Swap this for a real NVX or Biamp driver later
+    // Fake switcher and DSP. Swap for a real NVX or Biamp driver later.
     internal sealed class DeviceEmulator
     {
-        // Analog joins are 0-65535 end to end.
+        // Analog range is 0-65535.
         public const ushort MinLevel = 0;
         public const ushort MaxLevel = 65535;
 
-        /// <summary>1-based, matching the contract. 0 means nothing is selected.</summary>
+        /// <summary>Selected source. Starts at 1. 0 = none.</summary>
         public int SelectedSource { get; private set; }
 
         public ushort SourceLevel { get; private set; } = 26214;   // about 40%
@@ -16,10 +16,10 @@ namespace CrestronMasters26.P502.JsonFileOps
         public bool SourceMuted { get; private set; }
         public bool MicMuted { get; private set; }
 
-        /// <summary>Raised once the switch has happened.</summary>
+        /// <summary>Raised when the selected source or a display route changes.</summary>
         public event EventHandler? RoutingChanged;
 
-        /// <summary>Raised on any level or mute change, from any cause.</summary>
+        /// <summary>Raised when a level or mute changes.</summary>
         public event EventHandler? AudioChanged;
 
         // ---------------------------------------------------------------- routing
@@ -33,17 +33,27 @@ namespace CrestronMasters26.P502.JsonFileOps
 
             SelectedSource = src;
 
-            RoutingChanged?.Invoke(this, EventArgs.Empty);
+            //RoutingChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>
-        /// A reloaded config can be shorter than the one the selection was made against.
-        /// The device is what holds the selection, so the clamp belongs here.
-        /// </summary>
-        public void ClampSelectedSource(int sourceCount)
+        // Display id -> source id on that display. Missing = cleared.
+        private readonly Dictionary<int, int> _routes = new Dictionary<int, int>();
+
+        /// <summary>Source id shown on a display. 0 = cleared.</summary>
+        public int RoutedSourceId(int displayId)
         {
-            if (SelectedSource > sourceCount)
-                SelectSource(0);
+            return _routes.TryGetValue(displayId, out int sourceId) ? sourceId : 0;
+        }
+
+        /// <summary>Put a source on a display. Source id 0 clears it.</summary>
+        public void Route(int displayId, int sourceId)
+        {
+            if (RoutedSourceId(displayId) == sourceId)
+                return;
+
+            _routes[displayId] = sourceId;
+
+            RoutingChanged?.Invoke(this, EventArgs.Empty);
         }
 
         // ---------------------------------------------------------------- audio

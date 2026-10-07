@@ -1,5 +1,7 @@
 import { Component, NgZone, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Icons } from '../helpers/icons';
 import { ControllerService, PRESET_COUNT } from '../service/controller.service';
 
 /** How long a finger has to stay down before the press counts as a store. */
@@ -24,9 +26,11 @@ const SAVED_MS = 1800;
   selector: 'app-presets',
   templateUrl: './presets.component.html',
   styleUrl: './presets.component.scss',
-  imports: [CommonModule]
+  imports: [CommonModule, FontAwesomeModule]
 })
 export class PresetsComponent implements OnDestroy {
+  readonly icons = Icons;
+
   readonly presets = Array.from({ length: PRESET_COUNT }, (_, i) => i);
   readonly holdSeconds = HOLD_MS / 1000;
 

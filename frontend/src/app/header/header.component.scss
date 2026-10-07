@@ -1,4 +1,5 @@
 .js-header {
+    position: relative;
     display: flex;
     align-items: center;
     height: var(--js-header-height);
@@ -41,4 +42,20 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+// Centred on the full header (= page width), not on the gap between the mode and the dropdown.
+.room-name {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 40%;
+    pointer-events: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
 }

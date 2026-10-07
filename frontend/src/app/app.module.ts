@@ -98,9 +98,9 @@ export class AppModule {
     if (isActive) {
       var entries = this.GetQueryParameters();
 
-      WebXPanelConfigParams.host = entries['host'] ?? '';
-      WebXPanelConfigParams.ipId = (entries['ipid'] ?? '').toLowerCase();
-      WebXPanelConfigParams.roomId = entries['roomid'] ?? '';
+      WebXPanelConfigParams.host = entries['host'] ?? location.hostname;
+      WebXPanelConfigParams.ipId = (entries['ipid'] ?? '30').toLowerCase();
+      WebXPanelConfigParams.roomId = entries['roomid'] ?? 'P502';
       WebXPanelConfigParams.tokenSource = entries['tokensource'];
       WebXPanelConfigParams.tokenUrl = entries['tokenurl'];
       WebXPanelConfigParams.authToken = entries['authtoken'] ?? 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImVlNDBlMzY0LTVkNGUtNDRkOC1hMDczLTlkZGE0Yzc0ZjM5MSIsImx2IjoiRGVmYXVsdCBMZXZlbCIsInZlciI6IjEuMCIsImV4cGkiOiIwIn0.8UoiTQjskcWZV0PmByEZ2TTrvY0FWJqg8FbkNvaxrls';

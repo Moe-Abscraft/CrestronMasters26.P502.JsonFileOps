@@ -6,78 +6,63 @@ namespace CrestronMasters26.P502.JsonFileOps
     {
         private void InitializeDisplaysContract()
         {
-            // The generated event args don't say WHICH display fired, so the index gets
-            // captured in the closure. 'index' has to be a fresh local each pass: a for
-            // loop reuses its variable, so handing 'i' straight to the lambda leaves every
-            // handler looking at the same variable - which by then holds Length.
+            // Copy i into 'index' so each button keeps its own number.
+            // Using i directly would give every button the last value.
             for (int i = 0; i < _contract.Displays.Display.Length; i++)
             {
                 int index = i;
                 IDisplay display = _contract.Displays.Display[index];
 
-                display.Select += OnPress($"Displays.Display[{index}].Select", () => RouteSelectedSourceToDisplay(index));
-                display.Clear += OnPress($"Displays.Display[{index}].Clear", () => ClearDisplay(index));
+                // Send the selected source to this display. Ignore presses on empty slots.
+                // Only tell the device. The panel updates when the device reports back (RoutingChanged).
+                display.Select += OnPress($"Displays.Display[{index}].Select", () =>
+                {
+                    if (index < _roomConfig.Displays.Count)
+                        _emulator.Route(_roomConfig.Displays[index].Id, SelectedSourceId());
+                });
+
+                // Clear this display.
+                display.Clear += OnPress($"Displays.Display[{index}].Clear", () =>
+                {
+                    if (index < _roomConfig.Displays.Count)
+                        _emulator.Route(_roomConfig.Displays[index].Id, 0);
+                });
             }
         }
 
-        // ---------------------------------------------------------------- what it does
+        // ---------------------------------------------------------------- config feedback
 
-        private void RouteSelectedSourceToDisplay(int displayIndex)
+        // Display names and models. Blank the unused slots.
+        private void UpdateDisplaysConfigFeedback()
         {
-            // The contract always has ten display slots; the config usually fills fewer, so
-            // a press on an empty slot is possible and has to be ignored, not thrown on.
-            if (_roomConfig == null || displayIndex < 0 || displayIndex >= _roomConfig.Displays.Count)
-                return;
-
-            _roomConfig.Displays[displayIndex].RoutedSourceId = SourceIdAt(_emulator.SelectedSource);
-
-            UpdateDisplaysFeedback();
-        }
-
-        private void ClearDisplay(int displayIndex)
-        {
-            if (_roomConfig == null || displayIndex < 0 || displayIndex >= _roomConfig.Displays.Count)
-                return;
-
-            _roomConfig.Displays[displayIndex].RoutedSourceId = 0;
-
-            UpdateDisplaysFeedback();
-        }
-
-        // RoutedSourceId is [JsonIgnore], so a freshly loaded config carries none. A real
-        // system would ask the router what it's actually doing; this kit rebuilds it from
-        // the last source pressed, so a reload doesn't blank the routing the user can see.
-        private void RestoreRoutedSourceFromSelection()
-        {
-            if (_roomConfig == null)
-                return;
-
-            int routedSourceId = SourceIdAt(_emulator.SelectedSource);
-
-            _roomConfig.Displays.ForEach(display => display.RoutedSourceId = routedSourceId);
-        }
-
-        // ---------------------------------------------------------------- feedback
-
-        private void UpdateDisplaysFeedback()
-        {
-            if (_roomConfig == null)
-                return;
-
             for (int i = 0; i < _contract.Displays.Display.Length; i++)
             {
                 DisplayInfo? display = i < _roomConfig.Displays.Count ? _roomConfig.Displays[i] : null;
-
                 string name = display?.Name ?? string.Empty;
                 string model = display?.Model ?? string.Empty;
-                // Looked up fresh each time, so a rename in the file shows up on the next reload.
-                string routed = display == null ? string.Empty : SourceNameById(display.RoutedSourceId);
 
                 IDisplay d = _contract.Displays.Display[i];
-
                 d.Name((sig, _) => sig.StringValue = name);
                 d.Model((sig, _) => sig.StringValue = model);
-                d.RoutedSource((sig, _) => sig.StringValue = routed);
+            }
+        }
+
+        // ---------------------------------------------------------------- state feedback
+
+        // Source shown on each display.
+        private void UpdateDisplaysStateFeedback()
+        {
+            for (int i = 0; i < _contract.Displays.Display.Length; i++)
+            {
+                // Look up the name each time so renames show up. Blank the unused slots.
+                string routed = string.Empty;
+                if (i < _roomConfig.Displays.Count)
+                {
+                    int sourceId = _emulator.RoutedSourceId(_roomConfig.Displays[i].Id);
+                    routed = _roomConfig.Sources.Find(s => s.Id == sourceId)?.Name ?? string.Empty;
+                }
+
+                _contract.Displays.Display[i].RoutedSource((sig, _) => sig.StringValue = routed);
             }
         }
     }

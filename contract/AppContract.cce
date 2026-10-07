@@ -384,6 +384,16 @@
 				},
 				{
 					"Errors": [],
+					"name": "RoomName",
+					"siblingId": "_rn7fb2k4q",
+					"dataType": 3,
+					"notes": "",
+					"id": "_rn3cm8x1v",
+					"parentId": "_1688vy92t",
+					"attributeType": 0
+				},
+				{
+					"Errors": [],
 					"name": "",
 					"siblingId": "_wedq84jzk",
 					"dataType": 1,
@@ -441,6 +451,16 @@
 					"dataType": 3,
 					"notes": "",
 					"id": "_chyz28zt8",
+					"parentId": "_1688vy92t",
+					"attributeType": 1
+				},
+				{
+					"Errors": [],
+					"name": "",
+					"siblingId": "_rn3cm8x1v",
+					"dataType": 3,
+					"notes": "",
+					"id": "_rn7fb2k4q",
 					"parentId": "_1688vy92t",
 					"attributeType": 1
 				},

@@ -17,7 +17,7 @@ namespace CrestronMasters26.P502.JsonFileOps
             {
                 int index = i;
 
-                // Hold join = save. Press join = recall, on release, unless Hold fired first.
+                // Hold = save. Short press = recall (on release).
                 presets[index].Hold += OnPress($"System.aPreset[{index}].Hold", () => SavePreset(index));
                 presets[index].Press += OnHold($"System.aPreset[{index}].Press", pressed =>
                 {
@@ -29,23 +29,21 @@ namespace CrestronMasters26.P502.JsonFileOps
             }
         }
 
+        // Save routes and audio to preset.json.
         private void SavePreset(int index)
         {
             _presetSaved[index] = true;
 
-            if (_roomConfig == null)
-                return;
-
             var preset = new Preset
             {
-                Routes = _roomConfig.Displays.ToDictionary(d => d.Id, d => d.RoutedSourceId),
+                Routes = _roomConfig.Displays.ToDictionary(d => d.Id, d => _emulator.RoutedSourceId(d.Id)),
                 SourceLevel = _emulator.SourceLevel,
                 SourceMuted = _emulator.SourceMuted,
                 MicLevel = _emulator.MicLevel,
                 MicMuted = _emulator.MicMuted
             };
 
-            // Read > change > write back.
+            // Read the file, change one preset, write it back.
             Dictionary<int, Preset> presets = _presetStore.Load();
             presets[index + 1] = preset;
             _presetStore.Save(presets);
@@ -53,18 +51,15 @@ namespace CrestronMasters26.P502.JsonFileOps
             ErrorLog.Notice("[JsonFileOps] preset {0} saved", index + 1);
         }
 
+        // Load a preset and send it to the device.
+        // Feedback comes back from the device (RoutingChanged / AudioChanged).
         private void RecallPreset(int index)
         {
-            if (_roomConfig == null || !_presetStore.Load().TryGetValue(index + 1, out Preset? preset))
+            if (!_presetStore.Load().TryGetValue(index + 1, out Preset? preset))
                 return;
 
-            foreach (DisplayInfo display in _roomConfig.Displays)
-            {
-                if (preset.Routes.TryGetValue(display.Id, out int sourceId))
-                    display.RoutedSourceId = sourceId;
-            }
-
-            UpdateDisplaysFeedback();
+            foreach (KeyValuePair<int, int> route in preset.Routes)
+                _emulator.Route(route.Key, route.Value);
 
             // Level before mute: moving a fader clears the mute.
             _emulator.SetSourceLevel(preset.SourceLevel);

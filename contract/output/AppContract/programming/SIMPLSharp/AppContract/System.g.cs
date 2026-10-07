@@ -18,6 +18,7 @@ namespace AppContract
         void AutoUpdate_Fb(SystemBoolInputSigDelegate callback);
         void LastUpdatedTime(SystemStringInputSigDelegate callback);
         void Message(SystemStringInputSigDelegate callback);
+        void RoomName(SystemStringInputSigDelegate callback);
 
         AppContract.IaPreset[] aPreset { get; }
     }
@@ -58,6 +59,7 @@ namespace AppContract
 
                 public const uint LastUpdatedTime = 1;
                 public const uint Message = 2;
+                public const uint RoomName = 3;
             }
         }
 
@@ -180,6 +182,14 @@ namespace AppContract
             for (int index = 0; index < Devices.Count; index++)
             {
                 callback(Devices[index].SmartObjects[ControlJoinId].StringInput[Joins.Strings.Message], this);
+            }
+        }
+
+        public void RoomName(SystemStringInputSigDelegate callback)
+        {
+            for (int index = 0; index < Devices.Count; index++)
+            {
+                callback(Devices[index].SmartObjects[ControlJoinId].StringInput[Joins.Strings.RoomName], this);
             }
         }
 

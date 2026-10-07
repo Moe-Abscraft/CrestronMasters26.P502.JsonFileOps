@@ -1,5 +1,5 @@
 <div class="message-box" role="alert" *ngIf="visible">
-    <i class="message-icon ri-error-warning-fill"></i>
+    <fa-icon class="message-icon" [icon]="icons.warning"></fa-icon>
 
     <div class="message-body">
         <span class="message-title">Warning</span>
@@ -7,6 +7,6 @@
     </div>
 
     <button type="button" class="message-dismiss" aria-label="Dismiss warning" (click)="dismiss()">
-        <i class="ri-close-line"></i>
+        <fa-icon [icon]="icons.close"></fa-icon>
     </button>
 </div>

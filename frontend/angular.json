@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cmpg-521-ui": {
+    "p502-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -27,7 +27,7 @@
             "allowedCommonJsDependencies": [
               "@crestron/ch5-webxpanel"
             ],
-            "outputPath": "dist/cmpg-521-ui",
+            "outputPath": "dist/p502-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
             "optimization": {
@@ -51,8 +51,6 @@
               }
             ],
             "styles": [
-              "./node_modules/@crestron/ch5-theme/output/themes/light-theme.css",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
             "stylePreprocessorOptions": {
@@ -92,10 +90,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "cmpg-521-ui:build:production"
+              "buildTarget": "p502-ui:build:production"
             },
             "development": {
-              "buildTarget": "cmpg-521-ui:build:development"
+              "buildTarget": "p502-ui:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -103,7 +101,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "cmpg-521-ui:build"
+            "buildTarget": "p502-ui:build"
           }
         },
         "test": {
@@ -126,8 +124,6 @@
               }
             ],
             "styles": [
-              "./node_modules/@crestron/ch5-theme/output/themes/light-theme.css",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
             "scripts": [

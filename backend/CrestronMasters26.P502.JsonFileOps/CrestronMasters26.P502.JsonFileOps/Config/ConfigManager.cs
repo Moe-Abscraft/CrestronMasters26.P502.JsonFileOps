@@ -1,11 +1,45 @@
-using System.Text.Json;
+//using System.Text.Json;
+using Newtonsoft.Json;
 using Crestron.SimplSharp;
 using CrestronIO = Crestron.SimplSharp.CrestronIO;
 
 namespace CrestronMasters26.P502.JsonFileOps
 {
+    #region Read me first: the loop every config file follows
+    // 1. Read the text from the file            File.ReadAllText
+    // 2. Deserialize: JSON text -> object       JsonConvert.DeserializeObject   (reading in)
+    // 3. Use the object, maybe change it
+    // 4. Serialize: object -> JSON text         JsonConvert.SerializeObject     (writing out)
+    // 5. Write the text to the file             File.WriteAllText
+    //
+    // Load() below does 1 and 2 when the file exists.
+    // On the first run there is no file, so it builds the defaults and does 4 and 5.
+    //
+    // The functions you need:
+    //   File.Exists          is the file there?
+    //   File.ReadAllText     read the whole file as one string
+    //   File.WriteAllText    write one string as the whole file
+    //   Path.Combine         build a path. Never glue folders together with slashes yourself.
+    //   Directory.GetApplicationRootDirectory   where the program lives on the processor
+    //
+    // This runs on a processor, not your laptop. There is no C: drive on the box,
+    // so we build paths from the processor's own folders.
+    #endregion
+
+    #region Read me: Newtonsoft.Json or System.Text.Json?
+    // Newtonsoft.Json   a NuGet package. Works on .NET 4.8 and on .NET 8. Used in this file,
+    //                   because a lot of us are still on .NET 4.8.
+    // System.Text.Json  built into .NET 8, nothing to install. The matching lines are left in
+    //                   this file, commented out. Swap them and it works the same way.
+    //
+    // One warning. Newtonsoft is forgiving: it reads single quotes, a trailing comma and
+    // comments anyway. Don't rely on that. System.Text.Json, online validators and almost
+    // everything else reject them. Write strict JSON.
+    #endregion
+
     internal class ConfigManager
     {
+        #region Fields and properties
         private readonly CCriticalSection _lock = new CCriticalSection();
         private readonly string _folder;
         private string _filePath;
@@ -16,33 +50,79 @@ namespace CrestronMasters26.P502.JsonFileOps
         private DateTime _loadedWriteTime;
         public String StatusMessage { get; private set; } = string.Empty;
         public bool MessageIsEnabled => StatusMessage.Length > 0;
-        private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
+        #endregion
+
+        #region JsonSettings: created once, reused for every read and write
+        // JsonSerializerOptions is for System.Text.Json, which is built into .NET 8.0.
+        //private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
+        //{
+        //    WriteIndented = true,
+        //    AllowTrailingCommas = true
+        //};
+
+        // JsonSerializerSettings is for Newtonsoft.Json, which is a separate NuGet package.
+        private static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
         {
-            WriteIndented = true,
-            AllowTrailingCommas = true
+            Formatting = Formatting.Indented,
+            MissingMemberHandling = MissingMemberHandling.Ignore,
+
+            // "sources": null in the file keeps the empty list instead of setting it to null.
+            NullValueHandling = NullValueHandling.Ignore
         };
+        #endregion
+
         public ConfigManager(string fileName, string subFolder)
         {
-            string root = CrestronEnvironment.DevicePlatform == eDevicePlatform.Appliance
-                ? "/user"                                                                    // 4-Series
-                : Path.Combine(CrestronIO.Directory.GetApplicationRootDirectory(), "user"); // VC-4
+            #region Read me: where does the file go? It depends on the platform
+            // Best practice: keep config files in the user folder, NOT in NVRAM.
+            // VC-4:      every room already has its own user folder, so we just use that.
+            // 4-Series:  the user folder is shared by all program slots, so each slot gets its own
+            //            subfolder. That's why ControlSystem passed "program01".
+            // Check if the program is running on a VC-4 or a 4-Series processor. This affects where the config file is stored.
+            bool isVc4 = CrestronEnvironment.DevicePlatform == eDevicePlatform.Server;
+            #endregion
 
-            string dir = !string.IsNullOrEmpty(subFolder) && CrestronEnvironment.DevicePlatform == eDevicePlatform.Appliance ? Path.Combine(root, subFolder) : root;
-            Directory.CreateDirectory(dir);
-            _folder = dir;
-            _filePath = Path.Combine(dir, fileName);
+            if (isVc4)
+            {
+                var appRoot = CrestronIO.Directory.GetApplicationRootDirectory();
+                _folder = Path.Combine(appRoot, "user");
+            }
+            #region 4-Series: /user is shared by all program slots, so we use /user/program01
+            else
+            {
+                if (subFolder != null)
+                    _folder = Path.Combine("/user", subFolder);
+                else
+                    _folder = "/user";
+            }
+
+            // same as above, but shorter. The ternary operator is less readable, so I expanded it above.
+            //_folder = CrestronEnvironment.DevicePlatform == eDevicePlatform.Server
+            //    ? Path.Combine(CrestronIO.Directory.GetApplicationRootDirectory(), "user")
+            //    : Path.Combine("/user", subFolder ?? "");
+            #endregion
+
+            #region Make sure the folder exists, then build the full file path
+            // Path.Combine joins the folder and the file name. Never glue paths together with slashes yourself.
+            Directory.CreateDirectory(_folder);
+            _filePath = Path.Combine(_folder, fileName);
+            #endregion
         }
 
-        /// <summary>Switch to another file in the same folder and load it. Reload and
-        /// auto-update follow the new file from then on.</summary>
+        #region Load(fileName): same code, different file (Separate / Combine)
+        // The Separate and Combine buttons call this with roomConfig_Separate.json or roomConfig_Combine.json.
+        /// <summary>Load a different file from the same folder.</summary>
         public RoomConfig Load(string fileName)
         {
             _filePath = Path.Combine(_folder, fileName);
             return Load();
         }
+        #endregion
 
+        /// <summary>Load the current file.</summary>
         public RoomConfig Load()
         {
+            #region Log it, and start clean: no config yet, no error message
             ErrorLog.Notice("[JsonFileOps] loading config from {0}", _filePath);
 
             // Stays null unless the file is read successfully.
@@ -50,73 +130,115 @@ namespace CrestronMasters26.P502.JsonFileOps
 
             // The UI shows this message. Empty means everything is fine.
             StatusMessage = string.Empty;
+            #endregion
 
-            // Enter/Leave in a try/finally: Leave runs even if something throws,
-            // otherwise the lock stays taken and the next Load() waits forever.
+            #region Read me: doing it safely (the lock, the deadlock, power loss)
+            // Event handlers in SIMPL# Pro run on different threads. A button press can call Load at
+            // the exact same moment the auto-update timer calls Load. Two threads in the same file at
+            // once means corrupted data or an exception.
+            //
+            // The fix is a lock. In Crestron that's CCriticalSection (the same idea as the C# lock).
+            // If you've done SIMPL+:  Enter() = StartFileOperations,  Leave() = EndFileOperations.
+            // Only one thread gets in at a time. Everyone else waits.
+            //
+            // Leave() goes in finally. Always. If Leave() sits at the end of the try and something
+            // throws, we never reach it. The lock is never released, and the next Load waits forever.
+            // That's a deadlock: the program just stops responding.
+            //
+            // Power loss is the other risk. File.WriteAllText empties the file first, then writes.
+            // If the power drops in between, you're left with an empty config. The production fix is
+            // to write to a temp file, then move it over the real one. This project doesn't do that,
+            // but Load() does treat an empty file like bad JSON and runs on defaults.
+            #endregion
+
+            // The lock: only one thread at a time. Enter here, Leave in finally.
             _lock.Enter();
             try
             {
-                // 1. Try to read the file.
-                try
+                // 1. The file is there: read the text, then deserialize it (JSON text -> object).
+                if (File.Exists(_filePath))
                 {
-                    if (File.Exists(_filePath))
-                    {
-                        string json = File.ReadAllText(_filePath);
-                        config = JsonSerializer.Deserialize<RoomConfig>(json, JsonOptions);
-
-                        // Valid JSON, but the lists we need are missing.
-                        if (config == null || config.Sources == null || config.Displays == null)
-                        {
-                            config = null;
-                            StatusMessage = "Config file has no sources or displays — running on defaults";
-                        }
-                    }
-                    else
-                    {
-                        StatusMessage = $"No config found — default written to {_filePath}";
-                    }
-                }
-                catch (Exception e)
-                {
-                    // Bad JSON ends up here.
-                    StatusMessage = $"Config error: {e.Message} — running on defaults";
-                }
-
-                // 2. Nothing usable was read: use the defaults and write them to the file.
-                if (config == null)
-                {
-                    ErrorLog.Error("[JsonFileOps] {0}", StatusMessage);
-                    config = CreateDefault();
-
                     try
                     {
-                        string json = JsonSerializer.Serialize(config, JsonOptions);
-                        File.WriteAllText(_filePath, json);
+                        string jsonText = File.ReadAllText(_filePath);
+
+                        config = JsonConvert.DeserializeObject<RoomConfig>(jsonText, JsonSettings) ?? throw new Exception("file is empty");
+
+                        #region System.Text.Json version of the line above
+                        // If you want to use System.Text.Json instead of Newtonsoft.Json, uncomment the line below and comment out the line above.
+                        //config = JsonSerializer.Deserialize<RoomConfig>(jsonText, JsonOptions);
+                        #endregion
                     }
+                    #region catch: bad JSON lands here. Show the error on the panel and run on defaults
+                    catch (Exception e)
+                    {
+                        // We don't crash. The error goes in StatusMessage, and the panel shows it.
+                        // We do NOT write the defaults over a broken file. Imagine a tech on site fixing a typo:
+                        // if we overwrote their file, all their edits would be gone.
+                        // Bad JSON ends up here.
+                        StatusMessage = $"Config error: {e.Message} — running on defaults";
+                        config = CreateDefault();
+                    }
+                    #endregion
+
+                }
+                else
+                {
+                    // 2. No file (first run): build the defaults, serialize them (object -> JSON text), write the file.
+                    #region Status message and log
+                    StatusMessage = $"No config found — default written to {_filePath}";
+                    ErrorLog.Error(StatusMessage);
+                    #endregion
+                    try
+                    {
+                        config = CreateDefault();
+                        // Convert the RoomConfig object to JSON text. If the object is invalid, this will throw an exception.
+                        string jsonText = JsonConvert.SerializeObject(config, JsonSettings);
+
+                        // If you want to use System.Text.Json instead of Newtonsoft.Json, uncomment the line below and comment out the line above.
+                        //string json = JsonSerializer.Serialize(config, JsonOptions);
+
+                        File.WriteAllText(_filePath, jsonText);
+                    }
+                    #region catch: could not write the default file
                     catch (Exception e)
                     {
                         ErrorLog.Error("[JsonFileOps] could not write default config: {0}", e.Message);
                     }
+                    #endregion
                 }
 
+                #region 3. Remember the file's write time, so auto-update can tell when it changes
                 // 3. Remember the file time, or auto-update thinks the file changed.
                 _loadedWriteTime = File.GetLastWriteTimeUtc(_filePath);
+                #endregion
             }
+            #region catch: anything else that went wrong goes to the error log
+            catch (Exception e)
+            {
+                ErrorLog.Error("[JsonFileOps] could not load config: {0}", e.Message);
+            }
+            #endregion
             finally
             {
+                // finally runs no matter what happens, so the lock is always released.
                 _lock.Leave();
             }
 
+            #region Keep the config, tell the UI (outside the lock), and return it
             config.LastReadTime = DateTime.Now;
 
             RoomConfig = config;
 
-            // Outside the lock: a subscriber that calls back into Load() must not deadlock.
+            // Tell the UI. Done outside the lock to avoid a deadlock.
             ConfigChanged?.Invoke(this, config);
 
             return config;
+            #endregion
         }
 
+        #region CreateDefault: the config we use on first run or when the file is bad
+        // Default config for first run or a bad file.
         private static RoomConfig CreateDefault()
         {
             return new RoomConfig
@@ -139,7 +261,12 @@ namespace CrestronMasters26.P502.JsonFileOps
                 }
             };
         }
+        #endregion
 
+        #region Auto-update: a timer checks the file's write time every second
+        // Turn file watching on or off. The timer calls CheckFileTime every second.
+        // If the write time changed since we loaded the file, we load it again.
+        // That's why Load() remembers the write time in step 3.
         public void EnableAutoUpdate(bool enable)
         {
             if(enable)
@@ -159,6 +286,7 @@ namespace CrestronMasters26.P502.JsonFileOps
             }
         }
 
+        // Reload if the file time changed.
         private void CheckFileTime()
         {
             try
@@ -178,5 +306,6 @@ namespace CrestronMasters26.P502.JsonFileOps
                 ErrorLog.Error("[JsonFileOps] could not check file time for {0}: {1}", _filePath, e.Message);
             }
         }
+        #endregion
     }
 }

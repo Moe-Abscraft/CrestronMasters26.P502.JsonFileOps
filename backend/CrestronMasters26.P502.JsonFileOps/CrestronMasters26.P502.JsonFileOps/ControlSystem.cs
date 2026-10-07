@@ -5,13 +5,46 @@ using Thread = Crestron.SimplSharpPro.CrestronThread.Thread;
 
 namespace CrestronMasters26.P502.JsonFileOps
 {
+    #region Read me first: the problem this project solves
+    // A lot of us have hard-coded a room name or a device IP address straight into our program.
+    // Then the client wants to change it, and now we're recompiling and re-uploading
+    // just to fix one string.
+    //
+    // The fix: move that kind of data (room names, device IPs, presets, settings) out of the
+    // code and into a file the program reads. Change the file, restart, done. No rebuild.
+    //
+    // It works the other way too. The program can write to that file, so when something changes
+    // at runtime (a preset the user saved, a setting they adjusted) it's still there after a reboot.
+    //
+    // The format we use for that file is JSON. Start with the "Read me" regions in RoomConfig.cs,
+    // then come back here, then open ConfigManager.cs.
+    #endregion
+
+    #region Read me: the four lines in this file that matter for JSON and file IO
+    // 1. CrestronInvoke.BeginInvoke(StartupConfig, null)
+    //        Start the real work on another thread.
+    // 2. new ConfigManager("roomConfig.json", subFolderName)
+    //        Which file, and which folder.
+    // 3. _configManager.Load()
+    //        Read the file and get back a RoomConfig object.
+    // 4. new XpanelForHtml5(_roomConfig.XPanelIpId, this)
+    //        Use a value from the file where a hard-coded number used to be.
+    //
+    // Everything else is in a region. Expand a region to read how that part works.
+    #endregion
     public class ControlSystem : CrestronControlSystem
     {
-        private ConfigManager _configManager;
-        private RoomConfig _roomConfig;
-        private XpanelForHtml5 _xpanel;
-        private UiHandler _uiHandler;
-        private DeviceEmulator _emulator;
+        #region Fields
+        private ConfigManager? _configManager;
+        private RoomConfig? _roomConfig;
+        private XpanelForHtml5? _xpanel;
+        private UiHandler? _uiHandler;
+        private DeviceEmulator? _emulator;
+        #endregion
+
+        #region Constructor: runs first, keep it fast (not JSON)
+        // The constructor runs first. Keep it fast.
+        // We only set the thread limit and hook up the system events here.
         public ControlSystem() : base()
         {
             Thread.MaxNumberOfUserThreads = 20;
@@ -20,32 +53,50 @@ namespace CrestronMasters26.P502.JsonFileOps
             CrestronEnvironment.ProgramStatusEventHandler += CrestronEnvironment_ProgramStatusEventHandler;
             CrestronEnvironment.EthernetEventHandler += CrestronEnvironment_EthernetEventHandler;
         }
+        #endregion
 
+        // Runs next. Start the real work on another thread.
         public override void InitializeSystem()
         {
-            // Initialization code here
+            #region Log the .NET runtime (not JSON)
             ErrorLog.Notice($"Runtime {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}");
+            #endregion
 
+            // InitializeSystem runs next. The real work goes on another thread,
+            // so we don't block the main thread while we read files.
             CrestronInvoke.BeginInvoke(StartupConfig, null);
         }
 
+        // Load the config, create the parts, register the panel.
         private void StartupConfig(object? o)
         {
-            string programSlotName = "program" + ProgramNumber.ToString("D2");
-            _configManager = new ConfigManager("roomConfig.json", programSlotName);
+            #region subFolderName: one folder per program slot (slot 1 = "program01")
+            // One subfolder per program slot. For processors with multiple program slots, this allows each slot to have its own config file.
+            // Best practice is to store the config files inside the user folder, NOT NVRAM.
+            // User folder in Appliance Processors are shared between all program slots, so each slot needs its own subfolder to avoid conflicts.
+            // User folder in VC-4 is separated per ROOM, so no need for subfolders.
+            string subFolderName = "program" + ProgramNumber.ToString("D2");
+            #endregion
 
+            // Which file, and which folder.
+            _configManager = new ConfigManager("roomConfig.json", subFolderName);
+
+            // Read the file. We get back a RoomConfig object.
             _roomConfig = _configManager.Load();
 
-            // Stands in for the switcher and the DSP. Replace it with real drivers and
-            // the UI layer above it doesn't change.
+            #region Device emulator and UI handler (not JSON)
+            // Fake switcher and DSP. Replace with real drivers later.
             _emulator = new DeviceEmulator();
 
-            // UiHandler wires its own presses. Nothing about routing, audio, reloading or
-            // the contract belongs up here.
+            // UiHandler handles all panel buttons press and feedback.
             _uiHandler = new UiHandler(_configManager, _emulator);
+            #endregion
 
+            // The XPanel IPID isn't hard-coded anymore. It comes from the file.
+            // That's the whole point of today.
             _xpanel = new XpanelForHtml5(_roomConfig.XPanelIpId, this);
 
+            #region Register the panel and send it the current state (not JSON)
             if (_xpanel.Register() != eDeviceRegistrationUnRegistrationResponse.Success)
             {
                 ErrorLog.Error($"Failed to register XPanel with IP ID {_roomConfig.XPanelIpId}");
@@ -53,17 +104,18 @@ namespace CrestronMasters26.P502.JsonFileOps
             }
 
             _uiHandler.AddUi(_xpanel);
-            _uiHandler.UpdateFeedback(_roomConfig);
+            _uiHandler.UpdateAllFeedback();
 
-            // A panel that was asleep at startup has no feedback until it asks for it.
+            // Panel came online: send it the current state.
             _xpanel.OnlineStatusChange += (dev, args) =>
             {
                 if (args.DeviceOnLine)
-                    _uiHandler.UpdateFeedback(_configManager.RoomConfig);
+                    _uiHandler.UpdateAllFeedback();
             };
+            #endregion
         }
 
-        #region System Events
+        #region System events: log them, and clean up when the program stops (not JSON)
         private void CrestronEnvironment_SystemEventHandler(eSystemEventType systemEventType)
         {
             ErrorLog.Notice("[JsonFileOps] System Event: {0}", systemEventType.ToString());
@@ -75,7 +127,7 @@ namespace CrestronMasters26.P502.JsonFileOps
 
             if (programEventType == eProgramStatusEventType.Stopping)
             {
-                // The file watcher's timer would keep firing into a stopped program.
+                // Program stopping: stop the timer and clean up.
                 _configManager?.EnableAutoUpdate(false);
                 _uiHandler?.Dispose();
             }

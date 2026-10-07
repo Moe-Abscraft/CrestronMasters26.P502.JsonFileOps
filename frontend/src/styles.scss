@@ -1,13 +1,40 @@
-@import './assets/stylesheets/index.css';
-/* Importing Bootstrap SCSS file. */
+/*
+ * Bootstrap, trimmed to what the templates use: grid (row / col /
+ * container-fluid), buttons, the ngbDropdown in the header, and the display
+ * utilities (d-inline-block). The full bootstrap.min.css is ~230 KB; add a
+ * partial here if a template starts using another Bootstrap component.
+ */
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/utilities';
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/transitions';
+@import 'bootstrap/scss/dropdown';
 
-@import './assets//stylesheets/icons-sax//icons-sax.css';
-@import './assets/fonts/remixicon/remixicon.css';
+$utilities: map-get-multiple($utilities, ('display'));
+@import 'bootstrap/scss/utilities/api';
+
+@import './assets/stylesheets/index.css';
 
 body {
     background: none;
     background-color: rgba($color: #000000, $alpha: 0);
     overflow: hidden;
+}
+
+/* Font Awesome SVG icons: centre the glyph in its box instead of sitting on the text baseline. */
+fa-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .nobg {
