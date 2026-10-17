@@ -5,21 +5,6 @@ using Thread = Crestron.SimplSharpPro.CrestronThread.Thread;
 
 namespace CrestronMasters26.P502.JsonFileOps
 {
-    #region Read me first: the problem this project solves
-    // A lot of us have hard-coded a room name or a device IP address straight into our program.
-    // Then the client wants to change it, and now we're recompiling and re-uploading
-    // just to fix one string.
-    //
-    // The fix: move that kind of data (room names, device IPs, presets, settings) out of the
-    // code and into a file the program reads. Change the file, restart, done. No rebuild.
-    //
-    // It works the other way too. The program can write to that file, so when something changes
-    // at runtime (a preset the user saved, a setting they adjusted) it's still there after a reboot.
-    //
-    // The format we use for that file is JSON. Start with the "Read me" regions in RoomConfig.cs,
-    // then come back here, then open ConfigManager.cs.
-    #endregion
-
     #region Read me: the four lines in this file that matter for JSON and file IO
     // 1. CrestronInvoke.BeginInvoke(StartupConfig, null)
     //        Start the real work on another thread.
@@ -29,8 +14,6 @@ namespace CrestronMasters26.P502.JsonFileOps
     //        Read the file and get back a RoomConfig object.
     // 4. new XpanelForHtml5(_roomConfig.XPanelIpId, this)
     //        Use a value from the file where a hard-coded number used to be.
-    //
-    // Everything else is in a region. Expand a region to read how that part works.
     #endregion
     public class ControlSystem : CrestronControlSystem
     {
@@ -58,7 +41,7 @@ namespace CrestronMasters26.P502.JsonFileOps
         // Runs next. Start the real work on another thread.
         public override void InitializeSystem()
         {
-            #region Log the .NET runtime (not JSON)
+            #region Log the .NET runtime
             ErrorLog.Notice($"Runtime {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}");
             #endregion
 

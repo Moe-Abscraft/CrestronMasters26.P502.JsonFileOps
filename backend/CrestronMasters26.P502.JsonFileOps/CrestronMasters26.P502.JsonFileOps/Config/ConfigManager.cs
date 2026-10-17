@@ -21,9 +21,6 @@ namespace CrestronMasters26.P502.JsonFileOps
     //   File.WriteAllText    write one string as the whole file
     //   Path.Combine         build a path. Never glue folders together with slashes yourself.
     //   Directory.GetApplicationRootDirectory   where the program lives on the processor
-    //
-    // This runs on a processor, not your laptop. There is no C: drive on the box,
-    // so we build paths from the processor's own folders.
     #endregion
 
     #region Read me: Newtonsoft.Json or System.Text.Json?
@@ -226,6 +223,12 @@ namespace CrestronMasters26.P502.JsonFileOps
             }
 
             #region Keep the config, tell the UI (outside the lock), and return it
+            if(config == null)
+            {
+                // This should never happen, but if it does, we don't want to crash. We return a default config.
+                ErrorLog.Error("[JsonFileOps] Load() returned null, using default config");
+                config = CreateDefault();
+            }
             config.LastReadTime = DateTime.Now;
 
             RoomConfig = config;
@@ -264,7 +267,7 @@ namespace CrestronMasters26.P502.JsonFileOps
         #endregion
 
         #region Auto-update: a timer checks the file's write time every second
-        // Turn file watching on or off. The timer calls CheckFileTime every second.
+        // The timer calls CheckFileTime every second.
         // If the write time changed since we loaded the file, we load it again.
         // That's why Load() remembers the write time in step 3.
         public void EnableAutoUpdate(bool enable)
