@@ -1,0 +1,5 @@
+https://json2csharp.com/
+
+sudo tail -f /var/log/messages | grep "Room Name"
+
+Fix the project name in the UI P502

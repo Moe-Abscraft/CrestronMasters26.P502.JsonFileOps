@@ -5,7 +5,7 @@ using CrestronIO = Crestron.SimplSharp.CrestronIO;
 
 namespace CrestronMasters26.P502.JsonFileOps
 {
-    #region Read me first: the loop every config file follows
+    #region Read me first: Steps that every JSON config file follows
     // 1. Read the text from the file            File.ReadAllText
     // 2. Deserialize: JSON text -> object       JsonConvert.DeserializeObject   (reading in)
     // 3. Use the object, maybe change it
