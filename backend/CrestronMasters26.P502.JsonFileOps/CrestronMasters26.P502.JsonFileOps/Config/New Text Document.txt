@@ -1,5 +1,5 @@
 https://json2csharp.com/
+https://jsonlint.com/
 
+debug ssh command for vc4:
 sudo tail -f /var/log/messages | grep "Room Name"
-
-Fix the project name in the UI P502
