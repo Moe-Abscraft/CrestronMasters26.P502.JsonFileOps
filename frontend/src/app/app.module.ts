@@ -98,13 +98,18 @@ export class AppModule {
     if (isActive) {
       var entries = this.GetQueryParameters();
 
-      WebXPanelConfigParams.host = entries['host'] ?? location.hostname;
-      WebXPanelConfigParams.ipId = (entries['ipid'] ?? '30').toLowerCase();
-      WebXPanelConfigParams.roomId = entries['roomid'] ?? 'P502';
-      WebXPanelConfigParams.tokenSource = entries['tokensource'];
-      WebXPanelConfigParams.tokenUrl = entries['tokenurl'];
-      WebXPanelConfigParams.authToken = entries['authtoken'] ?? 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImVlNDBlMzY0LTVkNGUtNDRkOC1hMDczLTlkZGE0Yzc0ZjM5MSIsImx2IjoiRGVmYXVsdCBMZXZlbCIsInZlciI6IjEuMCIsImV4cGkiOiIwIn0.8UoiTQjskcWZV0PmByEZ2TTrvY0FWJqg8FbkNvaxrls';
-       
+      const pathRoom = location.pathname.match(/\/Rooms\/([^/]+)\//i)?.[1];
+      const roomId = entries['roomid'] ?? pathRoom ?? 'P502';
+
+      WebXPanelConfigParams.host   = entries['host'] ?? location.hostname;
+      WebXPanelConfigParams.ipId   = (entries['ipid'] ?? '30').toLowerCase();
+      WebXPanelConfigParams.roomId = roomId;
+
+      // Optional overrides only: library defaults are correct on VC-4
+      if (entries['tokenurl'])    WebXPanelConfigParams.tokenUrl    = entries['tokenurl'];
+      if (entries['tokensource']) WebXPanelConfigParams.tokenSource = entries['tokensource'];
+      if (entries['authtoken'])   WebXPanelConfigParams.authToken   = entries['authtoken'];
+
       console.log(
         'Crestron WebXPanelConfigParams: ' +
           JSON.stringify(WebXPanelConfigParams)
